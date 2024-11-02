@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Viewer App</title>
+    <link href="./output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-mamba text-white flex items-center justify-center mx-48 min-h-screen">
+
+    <div x-data="{ selectedTab: 'FML', selectedFont: 'FML-Akhila-Bold' }" class="flex flex-col w-full max-w-full">
+        <!-- Tab Selector -->
+        <div class="flex flex-col space-x-2 mb-6 space-y-6">
+            <div class="flex justify-between">
+                <button class="px-8 py-3 rounded-full w-fit bg-useless-gray text-primary-color">FML</button>
+                <!-- Font Selector Dropdown -->
+                <select x-model="selectedFont" class="p-2 bg-useless-gray text-primary-color">
+                    <option value="FML-Akhila-Bold">FML-Akhila-Bold</option>
+                    <option value="FML-Indulekha-BoldItalic">FML-Indulekha-BoldItalic</option>
+                    <option value="FML-Mohini-Bold">FML-Mohini-Bold</option>
+                    <option value="FML-Mohini-BoldItalic">FML-Mohini-BoldItalic</option>
+                    <option value="FML-Mohini-Italic">FML-Mohini-Italic</option>
+                    <option value="FML-Mohini">FML-Mohini</option>
+                    <option value="FML-Nanditha-Bold">FML-Nanditha-Bold</option>
+                    <option value="FML-Nanditha-BoldItalic">FML-Nanditha-BoldItalic</option>
+                    <option value="FML-Nanditha-Italic">FML-Nanditha-Italic</option>
+                    <option value="FML-Nanditha">FML-Nanditha</option>
+                    <option value="FML-Padmanabha-Bold">FML-Padmanabha-Bold</option>
+                    <option value="FML-Padmanabha-BoldItalic">FML-Padmanabha-BoldItalic</option>
+                    <option value="FML-Sruthy-Bold">FML-Sruthy-Bold</option>
+                    <option value="FML-Sruthy-BoldItalic">FML-Sruthy-BoldItalic</option>
+                    <option value="FML-Sruthy-Italic">FML-Sruthy-Italic</option>
+                    <option value="FML-Sruthy">FML-Sruthy</option>
+                    <option value="FMLAA0BTT">FMLAA0BTT</option>
+                    <option value="FMLAA0ITT">FMLAA0ITT</option>
+                    <option value="FMLAA0NTT">FMLAA0NTT</option>
+                    <option value="FMLAA0XTT">FMLAA0XTT</option>
+                    <option value="FMLAH0BTT">FMLAH0BTT</option>
+                    <option value="FMLAH0ITT">FMLAH0ITT</option>
+                    <option value="FMLAH0NTT">FMLAH0NTT</option>
+                    <option value="FMLAH0XTT">FMLAH0XTT</option>
+                    <option value="FMLAI0ITT">FMLAI0ITT</option>
+                    <option value="FMLAI0NTT">FMLAI0NTT</option>
+                    <option value="FMLAJ0BTT">FMLAJ0BTT</option>
+                    <option value="FMLAJ0XTT">FMLAJ0XTT</option>
+                    <option value="FMLAL0ITT">FMLAL0ITT</option>
+                    <option value="FMLAL0NTT">FMLAL0NTT</option>
+                    <option value="FMLAM0BTT">FMLAM0BTT</option>
+                    <option value="FMLAM0ITT">FMLAM0ITT</option>
+                    <option value="FMLAM0NTT">FMLAM0NTT</option>
+                    <option value="FMLAM0XTT">FMLAM0XTT</option>
+                    <option value="FMLAN0BTT">FMLAN0BTT</option>
+                    <option value="FMLAN0XTT">FMLAN0XTT</option>
+                    <option value="FMLAP0XTT">FMLAP0XTT</option>
+                    <option value="FMLAS0BTT">FMLAS0BTT</option>
+                    <option value="FMLAS0ITT">FMLAS0ITT</option>
+                    <option value="FMLAS0NTT">FMLAS0NTT</option>
+                    <option value="FMLAS0XTT">FMLAS0XTT</option>
+                    <option value="FMLAT0BTT">FMLAT0BTT</option>
+                    <option value="FMLAT0ITT">FMLAT0ITT</option>
+                    <option value="FMLAT0NTT">FMLAT0NTT</option>
+                    <option value="FMLAT0XTT">FMLAT0XTT</option>
+                    <option value="FMLBH0BTT">FMLBH0BTT</option>
+                    <option value="FMLBH0ITT">FMLBH0ITT</option>
+                    <option value="FMLBH0NTT">FMLBH0NTT</option>
+                    <option value="FMLBH0XTT">FMLBH0XTT</option>
+                    <option value="FMLBK0ITT">FMLBK0ITT</option>
+                    <option value="FMLBK0NTT">FMLBK0NTT</option>
+                    <option value="FMLCH0BTT">FMLCH0BTT</option>
+                    <option value="FMLCH0NTT">FMLCH0NTT</option>
+                    <option value="FMLCI0BTT">FMLCI0BTT</option>
+                    <option value="FMLCI0XTT">FMLCI0XTT</option>
+                    <option value="FMLCN0BTT">FMLCN0BTT</option>
+                    <option value="FMLCN0ITT">FMLCN0ITT</option>
+                    <option value="FMLCN0NTT">FMLCN0NTT</option>
+                    <option value="FMLCN0XTT">FMLCN0XTT</option>
+                    <option value="FMLDV0XTT">FMLDV0XTT</option>
+                    <option value="FMLGE0BTT">FMLGE0BTT</option>
+                    <option value="FMLGE0XTT">FMLGE0XTT</option>
+                    <option value="FMLGI0ITT">FMLGI0ITT</option>
+                    <option value="FMLGI0NTT">FMLGI0NTT</option>
+                    <option value="FMLGP0BTT">FMLGP0BTT</option>
+                    <option value="FMLGP0ITT">FMLGP0ITT</option>
+                    <option value="FMLGP0NTT">FMLGP0NTT</option>
+                    <option value="FMLGP0XTT">FMLGP0XTT</option>
+                    <option value="FMLGR0BTT">FMLGR0BTT</option>
+                    <option value="FMLGR0XTT">FMLGR0XTT</option>
+                    <option value="FMLGU0BTT">FMLGU0BTT</option>
+                    <option value="FMLGU0XTT">FMLGU0XTT</option>
+                    <option value="FMLIH0BPS">FMLIH0BPS</option>
+                    <option value="FMLIH0BTT">FMLIH0BTT</option>
+                    <option value="FMLIH0XPS">FMLIH0XPS</option>
+                    <option value="FMLIH0XTT">FMLIH0XTT</option>
+                    <option value="FMLIN0BPS">FMLIN0BPS</option>
+                    <option value="FMLIN0BTT">FMLIN0BTT</option>
+                    <option value="FMLIN0IPS">FMLIN0IPS</option>
+                    <option value="FMLIN0ITT">FMLIN0ITT</option>
+                    <option value="FMLIN0NPS">FMLIN0NPS</option>
+                    <option value="FMLIN0NTT">FMLIN0NTT</option>
+                    <option value="FMLIN0XTT">FMLIN0XTT</option>
+                    <option value="FMLJA0ITT">FMLJA0ITT</option>
+                    <option value="FMLJA0NTT">FMLJA0NTT</option>
+                    <option value="FMLJA0XTT">FMLJA0XTT</option>
+                    <option value="FMLJS0XTT">FMLJS0XTT</option>
+                    <option value="FMLJY0BTT">FMLJY0BTT</option>
+                    <option value="FMLJY0ITT">FMLJY0ITT</option>
+                    <option value="FMLJY0NTT">FMLJY0NTT</option>
+                    <option value="FMLJY0XTT">FMLJY0XTT</option>
+                    <option value="FMLKA0BTT">FMLKA0BTT</option>
+                    <option value="FMLKA0ITT">FMLKA0ITT</option>
+                    <option value="FMLKA0NTT">FMLKA0NTT</option>
+                    <option value="FMLKA0XTT">FMLKA0XTT</option>
+                    <option value="FMLKL0BTT">FMLKL0BTT</option>
+                    <option value="FMLKL0XTT">FMLKL0XTT</option>
+                    <option value="FMLKM0BTT">FMLKM0BTT</option>
+                    <option value="FMLKM0ITT">FMLKM0ITT</option>
+                    <option value="FMLKM0NTT">FMLKM0NTT</option>
+                    <option value="FMLKM0XTT">FMLKM0XTT</option>
+                    <option value="FMLKN0NTT">FMLKN0NTT</option>
+                    <option value="FMLKR0BPS">FMLKR0BPS</option>
+                    <option value="FMLKR0BTT">FMLKR0BTT</option>
+                    <option value="FMLKR0IPS">FMLKR0IPS</option>
+                    <option value="FMLKR0ITT">FMLKR0ITT</option>
+                    <option value="FMLKR0NPS">FMLKR0NPS</option>
+                    <option value="FMLKR0NTT">FMLKR0NTT</option>
+                    <option value="FMLKR0XPS">FMLKR0XPS</option>
+                    <option value="FMLKR0XTT">FMLKR0XTT</option>
+                    <option value="FMLKY0BTT">FMLKY0BTT</option>
+                    <option value="FMLKY0XTT">FMLKY0XTT</option>
+                    <option value="FMLLI0IPS">FMLLI0IPS</option>
+                    <option value="FMLLI0ITT">FMLLI0ITT</option>
+                    <option value="FMLLI0NPS">FMLLI0NPS</option>
+                    <option value="FMLLI0NTT">FMLLI0NTT</option>
+                    <option value="FMLLL0BPS">FMLLL0BPS</option>
+                    <option value="FMLLL0BTT">FMLLL0BTT</option>
+                    <option value="FMLLL0IPS">FMLLL0IPS</option>
+                    <option value="FMLLL0ITT">FMLLL0ITT</option>
+                    <option value="FMLLL0NPS">FMLLL0NPS</option>
+                    <option value="FMLLL0NTT">FMLLL0NTT</option>
+                    <option value="FMLLL0XPS">FMLLL0XPS</option>
+                    <option value="FMLLL0XTT">FMLLL0XTT</option>
+                    <option value="FMLML0BTT">FMLML0BTT</option>
+                    <option value="FMLML0ITT">FMLML0ITT</option>
+                    <option value="FMLML0NTT">FMLML0NTT</option>
+                    <option value="FMLML0XTT">FMLML0XTT</option>
+                    <option value="FMLMN0ITT">FMLMN0ITT</option>
+                    <option value="FMLMN0NTT">FMLMN0NTT</option>
+                    <option value="FMLMV0ITT">FMLMV0ITT</option>
+                    <option value="FMLMV0NTT">FMLMV0NTT</option>
+                    <option value="FMLMY0BTT">FMLMY0BTT</option>
+                    <option value="FMLMY0XTT">FMLMY0XTT</option>
+                    <option value="FMLNA0BTT">FMLNA0BTT</option>
+                    <option value="FMLNA0ITT">FMLNA0ITT</option>
+                    <option value="FMLNA0NTT">FMLNA0NTT</option>
+                    <option value="FMLNA0XTT">FMLNA0XTT</option>
+                    <option value="FMLND0BTT">FMLND0BTT</option>
+                    <option value="FMLND0ITT">FMLND0ITT</option>
+                    <option value="FMLND0NTT">FMLND0NTT</option>
+                    <option value="FMLND0XTT">FMLND0XTT</option>
+                    <option value="FMLNL0BTT">FMLNL0BTT</option>
+                    <option value="FMLNL0XTT">FMLNL0XTT</option>
+                    <option value="FMLNN0BTT">FMLNN0BTT</option>
+                    <option value="FMLNN0ITT">FMLNN0ITT</option>
+                    <option value="FMLNN0NTT">FMLNN0NTT</option>
+                    <option value="FMLNN0XTT">FMLNN0XTT</option>
+                    <option value="FMLNR0ITT">FMLNR0ITT</option>
+                    <option value="FMLNR0NTT">FMLNR0NTT</option>
+                    <option value="FMLON0BTT">FMLON0BTT</option>
+                    <option value="FMLON0XTT">FMLON0XTT</option>
+                    <option value="FMLPA0BTT">FMLPA0BTT</option>
+                    <option value="FMLPA0ITT">FMLPA0ITT</option>
+                    <option value="FMLPA0NTT">FMLPA0NTT</option>
+                    <option value="FMLPA0XTT">FMLPA0XTT</option>
+                    <option value="FMLPR0BTT">FMLPR0BTT</option>
+                    <option value="FMLPR0NTT">FMLPR0NTT</option>
+                    <option value="FMLPY0BTT">FMLPY0BTT</option>
+                    <option value="FMLPY0ITT">FMLPY0ITT</option>
+                    <option value="FMLPY0NTT">FMLPY0NTT</option>
+                    <option value="FMLPY0XTT">FMLPY0XTT</option>
+                    <option value="FMLRA0BTT">FMLRA0BTT</option>
+                    <option value="FMLRA0ITT">FMLRA0ITT</option>
+                    <option value="FMLRA0NTT">FMLRA0NTT</option>
+                    <option value="FMLRA0XTT">FMLRA0XTT</option>
+                    <option value="FMLRH0BPS">FMLRH0BPS</option>
+                    <option value="FMLRH0XPS">FMLRH0XPS</option>
+                    <option value="FMLRV0BPS">FMLRV0BPS</option>
+                    <option value="FMLRV0BTT">FMLRV0BTT</option>
+                    <option value="FMLRV0IPS">FMLRV0IPS</option>
+                    <option value="FMLRV0ITT">FMLRV0ITT</option>
+                    <option value="FMLRV0NPS">FMLRV0NPS</option>
+                    <option value="FMLRV0NTT">FMLRV0NTT</option>
+                    <option value="FMLRV0XPS">FMLRV0XPS</option>
+                    <option value="FMLRV0XTT">FMLRV0XTT</option>
+                    <option value="FMLSA0BTT">FMLSA0BTT</option>
+                    <option value="FMLSA0XTT">FMLSA0XTT</option>
+                    <option value="FMLSD0BTT">FMLSD0BTT</option>
+                    <option value="FMLSG0BTT">FMLSG0BTT</option>
+                    <option value="FMLSG0XTT">FMLSG0XTT</option>
+                    <option value="FMLSN0BTT">FMLSN0BTT</option>
+                    <option value="FMLSN0XTT">FMLSN0XTT</option>
+                    <option value="FMLSP0BTT">FMLSP0BTT</option>
+                    <option value="FMLSP0XTT">FMLSP0XTT</option>
+                    <option value="FMLSR0BTT">FMLSR0BTT</option>
+                    <option value="FMLSR0NTT">FMLSR0NTT</option>
+                    <option value="FMLSU0BTT">FMLSU0BTT</option>
+                    <option value="FMLSU0ITT">FMLSU0ITT</option>
+                    <option value="FMLSU0NTT">FMLSU0NTT</option>
+                    <option value="FMLSU0XTT">FMLSU0XTT</option>
+                    <option value="FMLSW0BTT">FMLSW0BTT</option>
+                    <option value="FMLSW0ITT">FMLSW0ITT</option>
+                    <option value="FMLTE0BTT">FMLTE0BTT</option>
+                    <option value="FMLTE0ITT">FMLTE0ITT</option>
+                    <option value="FMLTE0NTT">FMLTE0NTT</option>
+                    <option value="FMLTE0XTT">FMLTE0XTT</option>
+                    <option value="FMLTH0BTT">FMLTH0BTT</option>
+                    <option value="FMLTH0ITT">FMLTH0ITT</option>
+                    <option value="FMLTH0NTT">FMLTH0NTT</option>
+                    <option value="FMLTH0XTT">FMLTH0XTT</option>
+                    <option value="FMLTK0BTT">FMLTK0BTT</option>
+                    <option value="FMLTU0BTT">FMLTU0BTT</option>
+                    <option value="FMLTU0ITT">FMLTU0ITT</option>
+                    <option value="FMLTU0NTT">FMLTU0NTT</option>
+                    <option value="FMLTU0XTT">FMLTU0XTT</option>
+                    <option value="FMLVA0BTT">FMLVA0BTT</option>
+                    <option value="FMLVA0XTT">FMLVA0XTT</option>
+                    <option value="FMLVE0ITT">FMLVE0ITT</option>
+                    <option value="FMLVE0NTT">FMLVE0NTT</option>
+                    <option value="FMLVH0BTT">FMLVH0BTT</option>
+                    <option value="FMLVH0ITT">FMLVH0ITT</option>
+                    <option value="FMLVH0NTT">FMLVH0NTT</option>
+                    <option value="FMLVH0XTT">FMLVH0XTT</option>
+                    <option value="FMLVN0BTT">FMLVN0BTT</option>
+                    <option value="FMLVN0NTT">FMLVN0NTT</option>
+                    <option value="FMLVR0BTT">FMLVR0BTT</option>
+                    <option value="FMLVR0ITT">FMLVR0ITT</option>
+                    <option value="FMLVR0XTT">FMLVR0XTT</option>
+                    <option value="FMLVS0BTT">FMLVS0BTT</option>
+                    <option value="FMLVS0ITT">FMLVS0ITT</option>
+                    <option value="FMLVS0NTT">FMLVS0NTT</option>
+                    <option value="FMLVS0XTT">FMLVS0XTT</option>
+                    <option value="FMLYS0BTT">FMLYS0BTT</option>
+                </select>
+            </div>
+
+            <!-- Font Name Display -->
+            <div class="flex space-x-2 mb-8">
+                <p class="text-white text-6xl" x-text="selectedFont"></p>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="text-lg w-full flex justify-center">
+            <div 
+                class="text-5xl mt-8 w-3/4 text-center focus:outline-none" 
+                contenteditable="true" 
+                spellcheck="false"
+                x-text="'അതേസമയം മനുഷ്യാവകാശങ്ങളോടുള്ള അവഗണനയും അവഹേളനവുമാണ് കലാശിച്ചത്'"
+                :style="'font-family: ' + selectedFont">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
