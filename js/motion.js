@@ -75,27 +75,32 @@ export function revealCards(cards) {
   for (const card of cards) io.observe(card);
 }
 
+let activeFlip = null;
+
 export function flipGrid(cards, mutate) {
   if (!enabled || !window.Flip) { mutate(); return; }
-  const grid = cards[0]?.parentElement;
-  const before = grid ? grid.offsetHeight : 0;
-  const state = window.Flip.getState(cards, { props: 'opacity' });
-  mutate();
-  const visible = cards.filter((c) => !c.hidden);
-  if (visible.length) gsap.set(visible, { y: 0, opacity: 1 });
-  const after = grid ? grid.offsetHeight : 0;
-  window.Flip.from(state, {
-    duration: 0.55,
-    ease: 'power3.inOut',
-    absoluteOnLeave: true,
-    nested: true,
-    prune: true,
-    onEnter: (els) => els.length && gsap.fromTo(els, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.45, delay: 0.1 }),
-    onLeave: (els) => els.length && gsap.to(els, { opacity: 0, scale: 0.94, duration: 0.25 }),
-  });
-  if (grid && before !== after) {
-    gsap.fromTo(grid, { height: before }, { height: after, duration: 0.55, ease: 'power3.inOut', clearProps: 'height' });
+  if (activeFlip) {
+    activeFlip.progress(1).kill();
+    activeFlip = null;
   }
+  const margin = window.innerHeight * 0.5;
+  const near = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > -margin && r.top < window.innerHeight + margin;
+  };
+  const before = cards.filter((c) => !c.hidden && near(c));
+  const state = window.Flip.getState(before);
+  mutate();
+  const after = cards.filter((c) => !c.hidden && near(c));
+  if (!after.length) return;
+  gsap.set(after, { opacity: 1, y: 0 });
+  activeFlip = window.Flip.from(state, {
+    targets: after,
+    duration: 0.45,
+    ease: 'power3.inOut',
+    onEnter: (els) => els.length && gsap.fromTo(els, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.35 }),
+    onComplete: () => { activeFlip = null; },
+  });
 }
 
 export function ripplePreviews(previews) {

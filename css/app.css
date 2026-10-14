@@ -146,10 +146,10 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
 .hero-word {
   margin: 4px 0 0; font-weight: 400; line-height: 1.3;
   font-size: clamp(3.2rem, 15vw, 7.5rem); letter-spacing: 0;
-  min-height: 1.35em; overflow: hidden;
+  height: 1.35em; overflow: hidden; contain: layout;
 }
 .hero-word span { display: inline-block; will-change: transform, opacity, filter; }
-.hero-font { margin: 0; color: var(--muted); font-size: .85rem; min-height: 1.4em; }
+.hero-font { margin: 0; color: var(--muted); font-size: .85rem; height: 1.4em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hero-font b { color: var(--text); font-weight: 600; }
 .stats { display: flex; gap: 28px; margin: 22px 0 0; }
 .stats div { display: grid; }
@@ -261,15 +261,17 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
   background: var(--sunk); color: var(--muted); letter-spacing: .02em; white-space: nowrap;
 }
 .preview {
-  margin: 10px 10px 0; padding: 16px 14px; min-height: 124px; border-radius: 12px;
-  display: flex; align-items: center;
-  overflow-wrap: anywhere; line-height: 1.45;
+  margin: 10px 10px 0; padding: 16px 14px; border-radius: 12px;
+  height: calc(var(--size, 34px) * 1.45 * 3 + 32px);
+  display: flex; align-items: center; overflow: hidden;
+  font-size: var(--size, 34px); overflow-wrap: anywhere; line-height: 1.45;
   color: var(--fg, var(--text));
   background: var(--pbg, transparent);
   cursor: pointer;
   opacity: 0; transition: opacity .35s var(--ease), background .3s, color .3s;
 }
 .card.ready .preview { opacity: 1; }
+.pv { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
 .card-styles { display: flex; gap: 4px; flex-wrap: wrap; padding: 10px 16px 12px; }
 .card-styles button {
   border: 1px solid var(--line); background: transparent; color: var(--muted);

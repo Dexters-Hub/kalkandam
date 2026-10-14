@@ -1,5 +1,5 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=3';
-import * as motion from './motion.js?v=3';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=4';
+import * as motion from './motion.js?v=4';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -79,6 +79,11 @@ function hue(str) {
 }
 
 const fontLoads = new Map();
+const loadedFonts = new Set();
+const nearViewport = (el, margin = window.innerHeight) => {
+  const r = el.getBoundingClientRect();
+  return r.bottom > -margin && r.top < window.innerHeight + margin;
+};
 const cssFamily = (font) => `k-${font.id}`;
 
 function loadFont(font) {
@@ -86,6 +91,7 @@ function loadFont(font) {
     const face = new FontFace(cssFamily(font), `url("${encodeURI(font.web)}")`, { display: 'swap' });
     fontLoads.set(font.id, face.load().then((loaded) => {
       document.fonts.add(loaded);
+      loadedFonts.add(font.id);
       return loaded;
     }));
   }
@@ -207,27 +213,41 @@ function buildCard(group, { own = false } = {}) {
   return card;
 }
 
-function setCardFont(card, font) {
+function setCardFont(card, font, { lazy = false } = {}) {
   card._font = font;
   const preview = $('.preview', card);
-  preview.style.fontFamily = `"${cssFamily(font)}", system-ui`;
+  const family = `"${cssFamily(font)}", system-ui`;
   for (const b of $$('.card-styles button', card)) b.setAttribute('aria-pressed', String(b.dataset.id === font.id));
   const dl = $('[data-act="font"]', card);
   if (dl) {
     dl.href = downloadUrl(font);
     dl.setAttribute('download', font.file.split('/').pop());
   }
-  if (card.classList.contains('ready')) {
-    card.classList.remove('ready');
-    activateCard(card);
+  if (!card.classList.contains('ready') || loadedFonts.has(font.id)) {
+    preview.style.fontFamily = family;
+    return;
   }
+  if (lazy && !nearViewport(card)) {
+    card.classList.remove('ready');
+    preview.style.fontFamily = family;
+    observer.observe(card);
+    return;
+  }
+  loadFont(font)
+    .then(() => { if (card._font === font) preview.style.fontFamily = family; })
+    .catch(() => {});
 }
 
 function updateCardText(card) {
   const preview = $('.preview', card);
   const text = state.text || ' ';
-  preview.textContent = displayText(text, card._group.encoding);
-  preview.style.fontSize = `${state.size}px`;
+  let span = preview.firstElementChild;
+  if (!span) {
+    span = document.createElement('span');
+    span.className = 'pv';
+    preview.replaceChildren(span);
+  }
+  span.textContent = displayText(text, card._group.encoding);
   preview.setAttribute('aria-label', `Open ${card._group.family}: ${text}`);
 }
 
@@ -308,7 +328,7 @@ function renderControls() {
   let searchTimer;
   $('#search').addEventListener('input', (e) => {
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => { state.query = e.target.value.trim().toLowerCase(); applyFilters({ animate: true }); }, 160);
+    searchTimer = setTimeout(() => { state.query = e.target.value.trim().toLowerCase(); applyFilters(); }, 120);
   });
 
   const composer = $('.composer');
@@ -318,8 +338,15 @@ function renderControls() {
     ticking = true;
     requestAnimationFrame(() => {
       const y = window.scrollY;
-      if (y > 320) composer.classList.add('compact');
-      else if (y < 120) composer.classList.remove('compact');
+      const compact = composer.classList.contains('compact');
+      if (y > 320 && !compact) {
+        const full = composer.offsetHeight;
+        composer.classList.add('compact');
+        composer.style.marginBottom = `${full - composer.offsetHeight}px`;
+      } else if (y < 120 && compact) {
+        composer.classList.remove('compact');
+        composer.style.marginBottom = '';
+      }
       $('.top').classList.toggle('scrolled', window.scrollY > 8);
       ticking = false;
     });
@@ -356,12 +383,14 @@ function setText(text, { fromPreset = false } = {}) {
 }
 
 function refreshText() {
+  for (const grid of $$('.grid')) grid.style.setProperty('--size', `${state.size}px`);
   for (const card of $$('.card')) updateCardText(card);
 }
 
 function applyTheme() {
   const t = THEMES[state.theme] || THEMES[0];
   for (const grid of $$('.grid')) {
+    grid.style.setProperty('--size', `${state.size}px`);
     if (t.fg) grid.style.setProperty('--fg', t.fg);
     else grid.style.removeProperty('--fg');
     grid.style.setProperty('--pbg', t.bg);
@@ -376,7 +405,10 @@ function applyFilters({ animate = false } = {}) {
   else filterCards();
   const active = $('#collections button[aria-pressed="true"]');
   setChipIndicator(active);
-  active?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: motion.enabled ? 'smooth' : 'auto' });
+  const bar = $('#collections');
+  if (active && (active.offsetLeft < bar.scrollLeft || active.offsetLeft + active.offsetWidth > bar.scrollLeft + bar.clientWidth)) {
+    bar.scrollTo({ left: active.offsetLeft - 24, behavior: motion.enabled ? 'smooth' : 'auto' });
+  }
 }
 
 function filterCards() {
@@ -390,7 +422,7 @@ function filterCards() {
     card.hidden = !visible;
     if (visible) {
       shown++;
-      if (state.style !== 'All' && !styleMatches(card._font, state.style)) setCardFont(card, match);
+      if (state.style !== 'All' && !styleMatches(card._font, state.style)) setCardFont(card, match, { lazy: true });
     }
   }
   $$('#collections button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.value === state.collection)));
@@ -549,7 +581,9 @@ function renderSheet() {
   const stage = $('#stage');
   const text = $('#stage-text');
   const local = font.local;
-  text.style.fontFamily = `"${local || cssFamily(font)}", system-ui`;
+  const family = `"${local || cssFamily(font)}", system-ui`;
+  if (local || loadedFonts.has(font.id)) text.style.fontFamily = family;
+  else loadFont(font).then(() => { if (sheetCard && sheetCard._font === font) text.style.fontFamily = family; }).catch(() => {});
   text.style.fontSize = `${$('#sheet-size').value}px`;
   text.style.color = $('#sheet-fg').value;
   text.style.textAlign = $('#sheet-align').value;
@@ -562,7 +596,6 @@ function renderSheet() {
     text.removeAttribute('lang');
     text.setAttribute('aria-label', $('#sheet-text').value);
   }
-  if (!local) loadFont(font).catch(() => {});
 
   $$('#sheet-styles button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === font.id)));
   const kb = font.bytes ? `${Math.round(font.bytes / 1024)} KB` : '';
