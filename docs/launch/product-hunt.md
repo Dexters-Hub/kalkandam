@@ -1,5 +1,6 @@
 # Product Hunt launch kit
 
+Product: https://www.producthunt.com/products/kalkandam
 Maker: [@alwinjohn](https://www.producthunt.com/@alwinjohn)
 Live: https://kalkandam.in
 Repo: https://github.com/Dexters-Hub/kalkandam
@@ -62,4 +63,4 @@ Free
 - [ ] Schedule the launch for 12:01 AM Pacific
 - [ ] Post the maker's comment as soon as the launch goes live
 - [ ] Share on WhatsApp groups, Instagram and X with a PNG made on the site
-- [ ] After launch, add the Product Hunt badge to the README and the site footer (Product Hunt gives the embed code on the post page)
+- [x] Product Hunt link in the README and the site footer (https://www.producthunt.com/products/kalkandam)
