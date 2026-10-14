@@ -70,10 +70,7 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
 }
 .top.scrolled { border-bottom-color: var(--line); }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.brand-mark {
-  display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px;
-  background: var(--text); color: var(--bg); font-weight: 700; font-size: 1.05rem;
-}
+.brand-mark { display: block; width: 32px; height: 32px; border-radius: 9px; }
 .brand-en { font-weight: 650; letter-spacing: -.02em; }
 
 .top-actions { display: flex; align-items: center; gap: 8px; }
@@ -350,6 +347,8 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .made { margin: 0; color: var(--text); font-weight: 500; }
 .made a { font-weight: 650; text-decoration: none; border-bottom: 1.5px solid var(--accent); }
 .aka { color: var(--muted); font-weight: 400; }
+.aka a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.aka a:hover { color: var(--text); }
 .foot-links { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
 .foot-links a { color: var(--muted); text-decoration: none; }
 .foot-links a:hover { color: var(--text); }

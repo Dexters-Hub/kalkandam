@@ -56,19 +56,6 @@ Kalkandam puts everything in one fast page.
 
 Sources and licences for the Unicode fonts are listed in [`fonts/unicode/SOURCES.md`](fonts/unicode/SOURCES.md).
 
-## How the ML / FML conversion works
-
-Legacy Malayalam fonts reuse ASCII and Latin-1 code points for Malayalam glyphs: `I` is ക, `¡` is ക്ക, `s` is െ. Converting from Unicode means:
-
-1. **Split into syllables:** consonant clusters joined by ്, then an optional vowel sign.
-2. **Use ready-made conjunct glyphs,** longest match first: സ്റ്റ → `Ì`, ന്ത → `´`. Anything left keeps a visible chandrakkala (`v`).
-3. **Reorder:** െ േ ൈ and ്ര are typed *before* the consonant, so കൈ → `ssI` and ക്രോ → `t{Im`.
-4. **Use post-base forms** for ്യ (`y`) and ്വ (`z`).
-
-ML-TT, FML and ML-KV share one layout. The only difference is ണ്ട, which is `U+00AD` in ML and `ï` in FML.
-
-The mapping was reverse-engineered from [kuttipencil.in](https://kuttipencil.in) and checked glyph by glyph against the font files. The converter in [`js/malayalam.js`](js/malayalam.js) is written from scratch, round-trips every consonant × vowel sign and every two-consonant cluster (52,992 cases), and fixes a few kuttipencil bugs along the way: ൈ with ്ര, ZWNJ, ൿ, the സ്ഥ / സ്ല / ല്പ glyphs, and hyphens.
-
 ## Run it locally
 
 ```sh
@@ -125,6 +112,6 @@ If Kalkandam saved you time, [⭐ star the repo](https://github.com/Dexters-Hub/
 
 ## Credits
 
-Built by [Dexters-Hub](https://github.com/Dexters-Hub) (aka Alwin John) · [Product Hunt](https://www.producthunt.com/@alwinjohn)
+Built by [Dexters-Hub](https://github.com/Dexters-Hub) (aka [Alwin John](https://www.alwinjohn.com/)) · [Product Hunt](https://www.producthunt.com/@alwinjohn)
 
-Fonts belong to their designers and foundries. The Unicode set is openly licensed (see [`SOURCES.md`](fonts/unicode/SOURCES.md)); check each font's terms before commercial use. Thanks to [Swathanthra Malayalam Computing](https://smc.org.in), [Rachana Institute of Typography](https://rachana.org.in) and everyone who has kept Malayalam type alive.
+Fonts belong to their designers and foundries. The Unicode set is openly licensed (see [`SOURCES.md`](fonts/unicode/SOURCES.md)); check each font's terms before commercial use. Thanks to [kuttipencil.in](https://kuttipencil.in), the long-time home of Malayalam typing and ML / FML conversion, and to [Swathanthra Malayalam Computing](https://smc.org.in), [Rachana Institute of Typography](https://rachana.org.in) and everyone who has kept Malayalam type alive.
