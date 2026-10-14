@@ -2,7 +2,6 @@
 .github
 .gitignore
 .assetsignore
-.vercelignore
 .playwright-mcp
 node_modules
 docs
@@ -12,7 +11,6 @@ scripts
 package.json
 pnpm-lock.yaml
 wrangler.jsonc
-vercel.json
 fonts/fml-fonts
 fonts/ml-tt
 fonts/ml-kv
