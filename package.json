@@ -1,26 +1,35 @@
 {
   "name": "kalkandam",
   "version": "1.0.0",
+  "private": true,
   "description": "Kalkandam, a Malayalam font playground: preview, convert (Unicode ⇄ ML/FML, Manglish) and download 700 Malayalam fonts",
+  "keywords": [
+    "malayalam",
+    "fonts",
+    "unicode",
+    "ml-tt",
+    "fml",
+    "manglish",
+    "typography"
+  ],
+  "homepage": "https://kalkandam.in",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dexters-Hub/kalkandam.git"
+  },
+  "license": "MIT",
+  "author": "Alwin John (https://www.alwinjohn.com/)",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "start": "python3 -m http.server 8000",
     "build:fonts": "python3 scripts/build_fonts.py",
     "test": "node --test",
     "vendor:gsap": "mkdir -p vendor/gsap && cp node_modules/gsap/dist/gsap.min.js node_modules/gsap/dist/ScrollTrigger.min.js node_modules/gsap/dist/Flip.min.js vendor/gsap/"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14"
-  },
-  "type": "module",
   "dependencies": {
     "gsap": "3.15.0"
-  },
-  "engines": {
-    "node": "24.x"
   }
 }

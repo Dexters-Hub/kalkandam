@@ -13,10 +13,9 @@ package.json
 pnpm-lock.yaml
 wrangler.jsonc
 vercel.json
-tailwind.config.js
-postcss.config.js
 fonts/fml-fonts
 fonts/ml-tt
 fonts/ml-kv
 fonts/mlu
 fonts/unicode
+LICENSE
