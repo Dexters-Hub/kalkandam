@@ -317,7 +317,9 @@ function renderControls() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      composer.classList.toggle('compact', window.scrollY > 320);
+      const y = window.scrollY;
+      if (y > 320) composer.classList.add('compact');
+      else if (y < 120) composer.classList.remove('compact');
       $('.top').classList.toggle('scrolled', window.scrollY > 8);
       ticking = false;
     });
