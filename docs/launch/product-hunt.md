@@ -36,6 +36,7 @@ Free
 | Gallery 4 | `gallery-4-convert.png` | Unicode to ML / FML converter |
 | Gallery 5 | `gallery-5-phone.png` | Phone screens |
 | Social card | `../../assets/og.png` | 1200 × 630, also used for link previews |
+| Video | `kalkandam-demo.webm` | ~37 s, 1280 × 720. Upload to YouTube (Unlisted) and paste the link into the Video / Loom field |
 
 ## Maker's first comment
 
