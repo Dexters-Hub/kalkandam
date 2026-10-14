@@ -53,6 +53,10 @@ const state = {
   query: '',
 };
 
+const REPO = 'Dexters-Hub/kalkandam';
+const DOWNLOAD_BASE = `https://raw.githubusercontent.com/${REPO}/main/`;
+const downloadUrl = (font) => DOWNLOAD_BASE + font.file.split('/').map(encodeURIComponent).join('/');
+
 let FAMILIES = [];
 let BY_ID = new Map();
 
@@ -210,7 +214,7 @@ function setCardFont(card, font) {
   for (const b of $$('.card-styles button', card)) b.setAttribute('aria-pressed', String(b.dataset.id === font.id));
   const dl = $('[data-act="font"]', card);
   if (dl) {
-    dl.href = encodeURI(font.file);
+    dl.href = downloadUrl(font);
     dl.setAttribute('download', font.file.split('/').pop());
   }
   if (card.classList.contains('ready')) {
@@ -565,7 +569,7 @@ function renderSheet() {
   const dl = $('#dl-font');
   dl.hidden = Boolean(local);
   if (!local) {
-    dl.href = encodeURI(font.file);
+    dl.href = downloadUrl(font);
     dl.setAttribute('download', font.file.split('/').pop());
   }
   $('#sheet-note').textContent = g.encoding === 'unicode'
@@ -824,7 +828,6 @@ async function main() {
   initStars();
 }
 
-const REPO = 'Dexters-Hub/kalkandam';
 const STAR_TTL = 5 * 60 * 1000;
 
 async function fetchStars() {
