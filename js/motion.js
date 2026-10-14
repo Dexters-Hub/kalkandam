@@ -101,6 +101,11 @@ export function ripplePreviews(previews) {
   gsap.fromTo(onScreen, { y: 14, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.04, duration: 0.5, clearProps: 'transform,opacity' });
 }
 
+export function spin(el) {
+  if (!enabled || !el) return;
+  gsap.fromTo(el, { rotate: -90, scale: 0.6, opacity: 0 }, { rotate: 0, scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(2)' });
+}
+
 export function pulse(el) {
   if (!enabled || !el) return;
   gsap.fromTo(el, { scale: 0.9 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.45)' });

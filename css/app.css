@@ -17,7 +17,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0b0b0c;
     --surface: #141415;
     --sunk: #1b1b1d;
@@ -26,8 +26,22 @@
     --text: #f3f2ef;
     --muted: #94918b;
     --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 32px -16px rgb(0 0 0 / .6);
+    color-scheme: dark;
   }
 }
+
+:root[data-theme="dark"] {
+  --bg: #0b0b0c;
+  --surface: #141415;
+  --sunk: #1b1b1d;
+  --line: #242427;
+  --line-strong: #34343a;
+  --text: #f3f2ef;
+  --muted: #94918b;
+  --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 32px -16px rgb(0 0 0 / .6);
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -81,6 +95,20 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
   transition: border-color .2s, background .2s;
 }
 .star:hover { border-color: var(--line-strong); }
+.theme-toggle {
+  display: grid; place-items: center; width: 34px; height: 34px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.theme-toggle:hover { border-color: var(--line-strong); }
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle .moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .sun { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .moon { display: block; }
+}
 .star-count { padding-left: 8px; margin-left: 2px; border-left: 1px solid var(--line); color: var(--muted); font-variant-numeric: tabular-nums; }
 .tabs { display: none; position: relative; gap: 2px; padding: 4px; background: var(--sunk); border-radius: 999px; }
 .tabs a { position: relative; z-index: 1; padding: 6px 14px; border-radius: 999px; color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }

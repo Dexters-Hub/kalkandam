@@ -826,6 +826,34 @@ async function main() {
   motion.revealCards($$('#grid .card'));
   motion.pressFeedback();
   initStars();
+  initThemeToggle();
+}
+
+function initThemeToggle() {
+  const root = document.documentElement;
+  const button = $('#theme-toggle');
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+  const current = () => root.dataset.theme || (system.matches ? 'dark' : 'light');
+  const sync = () => {
+    const next = current() === 'dark' ? 'light' : 'dark';
+    button.setAttribute('aria-label', `Switch to ${next} theme`);
+    button.title = `Switch to ${next} theme`;
+    const color = current() === 'dark' ? '#0b0b0c' : '#fafaf8';
+    for (const meta of $$('meta[name="theme-color"]')) meta.setAttribute('content', color);
+  };
+  button.addEventListener('click', () => {
+    const next = current() === 'dark' ? 'light' : 'dark';
+    const apply = () => {
+      root.dataset.theme = next;
+      try { localStorage.setItem('kalkandam:theme', next); } catch {}
+      sync();
+    };
+    if (document.startViewTransition && motion.enabled) document.startViewTransition(apply);
+    else apply();
+    motion.spin(button.querySelector(next === 'dark' ? '.moon' : '.sun'));
+  });
+  system.addEventListener('change', sync);
+  sync();
 }
 
 const STAR_TTL = 5 * 60 * 1000;
