@@ -1,0 +1,7 @@
+/fonts/*
+!/fonts/web
+/docs
+/tests
+/scripts
+/node_modules
+*.md
