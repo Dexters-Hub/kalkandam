@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /fonts/
 
-Sitemap: https://kalkandam.vercel.app/sitemap.xml
+Sitemap: https://kalkandam.in/sitemap.xml

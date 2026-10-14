@@ -1,7 +1,7 @@
 # Product Hunt launch kit
 
 Maker: [@alwinjohn](https://www.producthunt.com/@alwinjohn)
-Live: https://kalkandam.vercel.app
+Live: https://kalkandam.in
 Repo: https://github.com/Dexters-Hub/kalkandam
 
 ## Listing
@@ -22,7 +22,7 @@ Design Tools · Typography · Open Source · Productivity
 Free
 
 **Links**
-- Website: https://kalkandam.vercel.app
+- Website: https://kalkandam.in
 - GitHub: https://github.com/Dexters-Hub/kalkandam
 
 ## Media
@@ -57,7 +57,7 @@ Free
 ## Launch day checklist
 
 - [ ] Set up the Buy Me a Coffee page at https://buymeacoffee.com/alwinjohn (the site already links to it)
-- [ ] Confirm https://kalkandam.vercel.app shows the new site and the link preview card (paste the URL into WhatsApp or https://www.opengraph.xyz)
+- [ ] Confirm https://kalkandam.in shows the new site and the link preview card (paste the URL into WhatsApp or https://www.opengraph.xyz)
 - [ ] Schedule the launch for 12:01 AM Pacific
 - [ ] Post the maker's comment as soon as the launch goes live
 - [ ] Share on WhatsApp groups, Instagram and X with a PNG made on the site

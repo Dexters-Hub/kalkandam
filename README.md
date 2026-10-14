@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://kalkandam.vercel.app"><img src="assets/icon.svg" width="72" height="72" alt="Kalkandam logo"></a>
+<a href="https://kalkandam.in"><img src="assets/icon.svg" width="72" height="72" alt="Kalkandam logo"></a>
 
 # Kalkandam · കൽക്കണ്ടം
 
@@ -8,15 +8,15 @@
 
 Type once and see it in every font. Built for phones.
 
-[**Open Kalkandam →**](https://kalkandam.vercel.app)
+[**Open Kalkandam →**](https://kalkandam.in)
 
 [![GitHub stars](https://img.shields.io/github/stars/Dexters-Hub/kalkandam?style=flat&color=ff4f1f&label=stars)](https://github.com/Dexters-Hub/kalkandam/stargazers)
-[![Live site](https://img.shields.io/badge/live-kalkandam.vercel.app-121212)](https://kalkandam.vercel.app)
+[![Live site](https://img.shields.io/badge/live-kalkandam.in-121212)](https://kalkandam.in)
 [![Fonts](https://img.shields.io/badge/fonts-697-121212)](#the-collection)
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-alwinjohn-ffdd00?logo=buymeacoffee&logoColor=000)](https://buymeacoffee.com/alwinjohn)
 [![Product Hunt](https://img.shields.io/badge/Product%20Hunt-@alwinjohn-da552f?logo=producthunt&logoColor=fff)](https://www.producthunt.com/@alwinjohn)
 
-<a href="https://kalkandam.vercel.app"><img src="assets/og.png" alt="Kalkandam: the word കൽക്കണ്ടം set in several Malayalam fonts" width="820"></a>
+<a href="https://kalkandam.in"><img src="assets/og.png" alt="Kalkandam: the word കൽക്കണ്ടം set in several Malayalam fonts" width="820"></a>
 
 </div>
 
