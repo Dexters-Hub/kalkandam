@@ -38,6 +38,7 @@ Kalkandam puts everything in one fast page.
 | ⌨️ **Manglish typing** | No Malayalam keyboard? Type `ente kEraLam` and get എന്റെ കേരളം. |
 | 🖼️ **Export** | PNG, transparent PNG, or share straight to WhatsApp and Instagram from your phone. |
 | 📥 **Download** | Get the original font file for Canva, CapCut, Photoshop or your computer. |
+| 🔡 **Learn the alphabet** | [kalkandam.in/letters](https://kalkandam.in/letters): every vowel, consonant, chillu, vowel sign, conjunct and numeral, with romanisation, IPA, example words and audio. |
 | 🧪 **Try your own font** | Drop in any `.ttf` / `.otf` / `.woff`. It never leaves your device. |
 | 📱 **Phone first** | Bottom navigation, bottom sheets, swipe to close, installable as an app. |
 | ♿ **Accessible** | Keyboard friendly, screen reader labels (legacy previews read as real Malayalam), respects reduced motion, light and dark themes. |
@@ -96,11 +97,14 @@ The build reads names and styles from the font files and makes compressed WOFF c
 ## Project layout
 
 ```
-index.html              the whole app
+index.html              the font app
+letters.html            Malayalam alphabet page
 css/app.css             styles (light + dark)
 js/app.js               UI
 js/malayalam.js         Unicode ⇄ ML / FML / Manglish conversion
 js/motion.js            GSAP animations, with a no-motion fallback
+js/common.js            theme toggle, GitHub stars, storage
+js/letters*.js          alphabet page and its data
 data/fonts.json         generated font catalogue
 fonts/                  original font files, plus web/ preview copies
 scripts/build_fonts.py  catalogue builder

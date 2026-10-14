@@ -412,3 +412,40 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
   .chips.small button { padding: 6px 13px; }
   .card-actions > * { padding: 14px 4px; }
 }
+
+.learn-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; color: var(--muted); font-size: .9rem; text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; transition: color .2s, border-color .2s; }
+.learn-link:hover { color: var(--text); border-color: var(--text); }
+
+.letters-view { max-width: 1000px; }
+.letters-hero { padding: 26px 2px 6px; }
+.letters-hero .eyebrow a { color: inherit; }
+.letters-hero h1 { margin: 6px 0 8px; font-size: clamp(2rem, 7vw, 3.2rem); font-weight: 650; letter-spacing: -.035em; line-height: 1.15; }
+.letters-hero h1 span { display: block; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+.letters-tools { display: grid; gap: 12px; margin-top: 14px; }
+.letters-tools select { max-width: 100%; min-width: 0; }
+#letters-jump { gap: 6px; }
+#letters-jump a {
+  flex: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: .82rem;
+  color: var(--muted); text-decoration: none; transition: color .2s, border-color .2s;
+}
+#letters-jump a:hover { color: var(--text); border-color: var(--line-strong); }
+.lt-section { margin-top: 34px; scroll-margin-top: 80px; }
+.lt-section h2, .lt-section h3 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 6px; letter-spacing: -.02em; }
+.lt-section h2 { font-size: 1.45rem; }
+.lt-section h3 { font-size: 1.05rem; margin-top: 22px; }
+.lt-section h2 small, .lt-section h3 small { color: var(--muted); font-size: .82rem; font-weight: 500; letter-spacing: 0; }
+.lt-intro { margin: 0 0 14px; color: var(--muted); font-size: .9rem; max-width: 60ch; }
+.lt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+.lt-grid.wide { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+.lt {
+  display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0;
+  padding: 14px 6px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+  color: var(--text); text-align: center; cursor: pointer; transition: border-color .2s, box-shadow .2s;
+}
+@media (hover: hover) { .lt:hover { border-color: var(--line-strong); box-shadow: var(--shadow); } }
+.lt-glyph { font-family: var(--letters-font, system-ui); font-size: 2.5rem; line-height: 1.3; }
+.lt-iso { font-weight: 600; font-size: .95rem; }
+.lt-mang, .lt-ipa, .lt-note { color: var(--muted); font-size: .74rem; }
+.lt-word { margin-top: 5px; color: var(--muted); font-size: .74rem; line-height: 1.3; overflow-wrap: anywhere; }
+.lt-word span { font-family: var(--letters-font, system-ui); color: var(--text); font-size: 1rem; }
+
