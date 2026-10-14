@@ -85,27 +85,25 @@ def read_sources():
     return sources
 
 
+def legacy_mapping(font):
+    mapping = dict(font.getBestCmap() or {})
+    symbol = next((t for t in font["cmap"].tables if (t.platformID, t.platEncID) == (3, 0)), None)
+    if symbol is not None:
+        for cp, glyph in symbol.cmap.items():
+            if 0xF020 <= cp <= 0xF0FF:
+                mapping.setdefault(cp - 0xF000, glyph)
+    if 0x00AD in mapping and 0x00EF not in mapping:
+        mapping[0x00EF] = mapping[0x00AD]
+    return mapping
+
+
 def make_web_copy(src, dest, encoding):
     font = TTFont(src)
-    cmap_table = font["cmap"]
-
     if encoding in ("ml", "kv"):
-        unicode_cmap = font.getBestCmap() or {}
-        symbol = next((t for t in cmap_table.tables if (t.platformID, t.platEncID) == (3, 0)), None)
-        mapping = dict(unicode_cmap)
-        if symbol is not None:
-            for cp, glyph in symbol.cmap.items():
-                if 0xF020 <= cp <= 0xF0FF:
-                    mapping.setdefault(cp - 0xF000, glyph)
-        if 0x00AD in mapping and 0x00EF not in mapping:
-            mapping[0x00EF] = mapping[0x00AD]
-        if symbol is not None or mapping != unicode_cmap:
-            sub = CmapSubtable.newSubtable(4)
-            sub.platformID, sub.platEncID, sub.language = 3, 1, 0
-            sub.cmap = {cp: g for cp, g in mapping.items() if cp <= 0xFFFF}
-            cmap_table.tables = [t for t in cmap_table.tables if (t.platformID, t.platEncID) != (3, 1)]
-            cmap_table.tables.append(sub)
-
+        sub = CmapSubtable.newSubtable(4)
+        sub.platformID, sub.platEncID, sub.language = 3, 1, 0
+        sub.cmap = {cp: g for cp, g in legacy_mapping(font).items() if cp <= 0xFFFF}
+        font["cmap"].tables = [sub]
     font.flavor = "woff"
     font.save(dest)
 
@@ -132,6 +130,13 @@ def main():
             if encoding == "unicode" and not has_malayalam(font):
                 print(f"skip {path.relative_to(ROOT)}: no Malayalam glyphs", file=sys.stderr)
                 continue
+            if encoding in ("ml", "kv"):
+                if len(font.getGlyphOrder()) < 100:
+                    print(f"skip {path.relative_to(ROOT)}: incomplete legacy font", file=sys.stderr)
+                    continue
+                if 0x00AD not in legacy_mapping(font):
+                    print(f"skip {path.relative_to(ROOT)}: no ണ്ട glyph slot", file=sys.stderr)
+                    continue
 
             raw_family = name(font, 16, 1) or path.stem
             style = name(font, 17, 2) or "Regular"

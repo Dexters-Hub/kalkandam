@@ -1,5 +1,5 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=4';
-import * as motion from './motion.js?v=4';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=5';
+import * as motion from './motion.js?v=5';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -78,6 +78,7 @@ function hue(str) {
   return h % 360;
 }
 
+const FONT_VERSION = 2;
 const fontLoads = new Map();
 const loadedFonts = new Set();
 const nearViewport = (el, margin = window.innerHeight) => {
@@ -88,7 +89,7 @@ const cssFamily = (font) => `k-${font.id}`;
 
 function loadFont(font) {
   if (!fontLoads.has(font.id)) {
-    const face = new FontFace(cssFamily(font), `url("${encodeURI(font.web)}")`, { display: 'swap' });
+    const face = new FontFace(cssFamily(font), `url("${encodeURI(font.web)}?v=${FONT_VERSION}")`, { display: 'swap' });
     fontLoads.set(font.id, face.load().then((loaded) => {
       document.fonts.add(loaded);
       loadedFonts.add(font.id);
