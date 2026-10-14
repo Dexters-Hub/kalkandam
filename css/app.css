@@ -371,31 +371,37 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 @media (min-width: 760px) { .toast { bottom: 28px; } }
 
 .foot { max-width: 1200px; margin: 40px auto 0; padding: 22px var(--pad) 30px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
-.foot-main { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.foot-main { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 24px; }
+.foot-credit { display: grid; gap: 6px; }
 .made { margin: 0; color: var(--text); font-weight: 500; }
 .made a { font-weight: 650; text-decoration: none; border-bottom: 1.5px solid var(--accent); }
 .aka { color: var(--muted); font-weight: 400; }
-.aka a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.aka a { color: inherit; font-weight: 400; border-bottom: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
 .aka a:hover { color: var(--text); }
-.foot-links { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; }
 .foot-links a { color: var(--muted); text-decoration: none; }
 .foot-links a:hover { color: var(--text); }
+
 @font-face { font-family: "Cookie"; src: url("../assets/fonts/cookie-subset.woff") format("woff"); font-display: swap; }
-.foot-links .bmc {
-  display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px 0 14px;
-  background: #ffdd00; color: #000; border: 1px solid #000; border-radius: 10px;
-  font-family: "Cookie", cursive; font-size: 26px; line-height: 1; letter-spacing: .2px;
-  box-shadow: 0 1px 2px rgb(0 0 0 / .08); transition: box-shadow .2s, transform .2s;
-}
-.foot-links .bmc:hover { color: #000; box-shadow: 0 4px 14px -4px rgb(0 0 0 / .3); }
-.bmc-cup { width: 20px; height: 26px; flex: none; }
-.foot-links .ph {
-  display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px 0 8px;
-  background: #ff6154; color: #fff; border-radius: 999px; font-weight: 600; font-size: .95rem;
+.foot-cta { display: flex; gap: 10px; align-items: center; }
+.foot-cta a {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px;
+  border-radius: 12px; text-decoration: none; white-space: nowrap;
   transition: box-shadow .2s, filter .2s;
 }
-.foot-links .ph:hover { color: #fff; filter: brightness(1.04); box-shadow: 0 4px 14px -4px rgb(255 97 84 / .55); }
-.ph-logo { width: 30px; height: 30px; flex: none; }
+.foot-cta .ph { padding: 0 18px 0 9px; background: #ff6154; color: #fff; border: 1px solid #ff6154; font-weight: 600; font-size: .95rem; }
+.foot-cta .ph:hover { filter: brightness(1.04); box-shadow: 0 4px 14px -4px rgb(255 97 84 / .55); }
+.ph-logo { width: 28px; height: 28px; flex: none; }
+.foot-cta .bmc {
+  padding: 0 18px 0 14px; background: #ffdd00; color: #000; border: 1px solid #000;
+  font-family: "Cookie", cursive; font-size: 26px; line-height: 1; letter-spacing: .2px;
+}
+.foot-cta .bmc:hover { box-shadow: 0 4px 14px -4px rgb(0 0 0 / .3); }
+.bmc-cup { width: 20px; height: 26px; flex: none; }
+@media (max-width: 559px) {
+  .foot-cta { width: 100%; }
+  .foot-cta a { flex: 1; padding-left: 10px; padding-right: 12px; }
+}
 .fine { margin: 14px 0 0; font-size: .78rem; }
 
 @media (pointer: coarse) {
