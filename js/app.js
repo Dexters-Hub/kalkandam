@@ -1,5 +1,5 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js';
-import * as motion from './motion.js';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=3';
+import * as motion from './motion.js?v=3';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -798,8 +798,13 @@ function initHero(fonts) {
   });
 }
 
+function safely(fn) {
+  try { fn(); } catch (err) { console.error(err); }
+}
+
 async function main() {
   const res = await fetch('./data/fonts.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`fonts.json ${res.status}`);
   const fonts = await res.json();
   BY_ID = new Map(fonts.map((f) => [f.id, f]));
   FAMILIES = groupFamilies(fonts);
@@ -816,19 +821,19 @@ async function main() {
 
   applyTheme();
   applyFilters();
-  initSheet();
-  initConverter();
-  initOwnFonts();
-  initHero(fonts);
-  setTabIndicator = motion.indicator($('.tabs'), 'tab-ind');
+  safely(initSheet);
+  safely(initConverter);
+  safely(initOwnFonts);
+  safely(() => initHero(fonts));
+  safely(() => { setTabIndicator = motion.indicator($('.tabs'), 'tab-ind'); });
   window.addEventListener('hashchange', route);
   route();
 
-  motion.intro();
-  motion.revealCards($$('#grid .card'));
-  motion.pressFeedback();
-  initStars();
-  initThemeToggle();
+  safely(motion.intro);
+  safely(() => motion.revealCards($$('#grid .card')));
+  safely(motion.pressFeedback);
+  safely(initStars);
+  safely(initThemeToggle);
 }
 
 function initThemeToggle() {
@@ -889,7 +894,8 @@ function initStars() {
   document.addEventListener('visibilitychange', update);
 }
 
+
 main().catch((err) => {
-  $('#count').textContent = 'Could not load the font catalogue. Run python3 scripts/build_fonts.py and serve the folder over http.';
+  $('#count').textContent = 'Kalkandam could not load. Please refresh the page.';
   console.error(err);
 });
