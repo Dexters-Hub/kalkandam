@@ -12,7 +12,7 @@ Type once and see it in every font. Built for phones.
 
 [![GitHub stars](https://img.shields.io/github/stars/Dexters-Hub/kalkandam?style=flat&logo=github&label=stars&color=ff4f1f)](https://github.com/Dexters-Hub/kalkandam/stargazers)
 [![Live site](https://img.shields.io/badge/live-kalkandam.in-121212)](https://kalkandam.in)
-[![Fonts](https://img.shields.io/badge/fonts-697-121212)](#the-collection)
+[![Fonts](https://img.shields.io/badge/fonts-709-121212)](#the-collection)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/Dexters-Hub?label=sponsors&logo=githubsponsors&color=ea4aaa)](https://github.com/sponsors/Dexters-Hub)
 [![License: MIT](https://img.shields.io/badge/license-MIT-121212)](LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-alwinjohn-ffdd00?logo=buymeacoffee&logoColor=000)](https://buymeacoffee.com/alwinjohn)
@@ -32,7 +32,7 @@ Kalkandam puts everything in one fast page.
 
 |  |  |
 | --- | --- |
-| 🔤 **Every font, your text** | Type once and see it in 697 fonts across 229 families, rendered live. |
+| 🔤 **Every font, your text** | Type once and see it in 709 fonts across 233 families, rendered live. |
 | 🪄 **Legacy fonts just work** | ML-TT, FML and ML-KV fonts get your text in the encoding they expect, so previews never show gibberish. |
 | ⇄ **Converter** | Unicode to ML series, Unicode to FML series, ML / FML back to Unicode, and Manglish. The four tools DTP folks use every day. |
 | ⌨️ **Manglish typing** | No Malayalam keyboard? Type `ente kEraLam` and get എന്റെ കേരളം. |
@@ -50,7 +50,7 @@ Kalkandam puts everything in one fast page.
 
 | Collection | Families | What it is |
 | --- | ---: | --- |
-| **Unicode** | 40 | Free, openly licensed fonts from [SMC](https://smc.org.in/fonts/), [Rachana Institute of Typography](https://rachana.org.in) and Google Fonts. Manjari, Chilanka, Nupuram, Malini, TN Joy, Sundar and more. |
+| **Unicode** | 44 | Free, openly licensed fonts from [SMC](https://smc.org.in/fonts/), [Rachana Institute of Typography](https://rachana.org.in) and Google Fonts. Manjari, Chilanka, Nupuram, Malini, TN Joy, Sundar, Samyak and more. |
 | **MLU** | 39 | Unicode versions of the classic DTP faces. |
 | **FML** | 67 | Legacy ASCII fonts in the FML layout. |
 | **ML-TT** | 64 | Legacy ASCII fonts used in PageMaker and Photoshop. |

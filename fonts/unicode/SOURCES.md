@@ -8,9 +8,11 @@ codepoints (U+0D00-U+0D7F) in its cmap.
 Fonts were downloaded only from the official upstream sources listed below:
 Google Fonts (`github.com/google/fonts`), Noto (`github.com/notofonts`), Swathanthra Malayalam
 Computing (`smc.org.in`, `github.com/smc`), and Rachana Institute of Typography (`rachana.org.in`,
-which links to its official build artifacts on `gitlab.com/rit-fonts`).
+which links to its official build artifacts on `gitlab.com/rit-fonts`). Samyak Malayalam, whose
+original home (`sarovar.org/projects/samyak`) is offline, comes from the upstream release tarball
+preserved in Fedora's package source archive (`src.fedoraproject.org`).
 
-40 families, 125 font files, 25.5 MB total. Collected 2026-10-14.
+44 families, 137 font files, 26.7 MB total. Collected 2026-10-14.
 
 | Family | Directory | Files | License (SPDX) | Designer / foundry | Source |
 |---|---|---|---|---|---|
@@ -54,6 +56,10 @@ which links to its official build artifacts on `gitlab.com/rit-fonts`).
 | RIT Lasya | `RIT-Lasya/` | 1 | `OFL-1.1` (`LICENSE.txt`) | Krishnakumar P V / Rachana Institute of Typography | https://gitlab.com/rit-fonts/Lasya/-/jobs/artifacts/1.0/download?job=build-tag (linked from https://rachana.org.in/downloads.html) |
 | RIT Lekha | `RIT-Lekha/` | 1 | `OFL-1.1` (`LICENSE.txt`) | Rahul Radhakrishnan / Rachana Institute of Typography | https://gitlab.com/rit-fonts/Lekha/-/jobs/artifacts/1.0/download?job=build-tag (linked from https://rachana.org.in/downloads.html) |
 | RIT Thaara | `RIT-Thaara/` | 1 | `OFL-1.1` (`LICENSE.txt`) | Karambir Singh Rohilla / Rachana Institute of Typography | https://gitlab.com/rit-fonts/Thaara/-/jobs/artifacts/1.0/download?job=build-tag (linked from https://rachana.org.in/downloads.html) |
+| Nupuram Display | `Nupuram-Display/` | 1 | `OFL-1.1` (`OFL.txt`) | Santhosh Thottingal / SMC | https://smc.org.in/downloads/fonts/nupuram/Nupuram-Display.zip (static TTF) |
+| Noto Sans Malayalam UI | `Noto-Sans-Malayalam-UI/` | 9 | `OFL-1.1` (`OFL.txt`) | Google Noto / Monotype (Jelle Bosma) | https://github.com/notofonts/malayalam/releases/tag/NotoSansMalayalam-v2.104 (hinted static TTF, normal width) |
+| Arima | `Arima/` | 1 | `OFL-1.1` (`OFL.txt`) | Natanael Gama, Joana Correia, Rosalie Wagner / NDISCOVER | https://github.com/google/fonts/tree/main/ofl/arima (variable TTF, wght) |
+| Samyak Malayalam | `Samyak-Malayalam/` | 1 | `GPL-3.0-or-later WITH Font-exception-2.0` (`LICENSE.txt`) | Rahul Bhalerao, Sandeep Shedmake, Bageshri Salvi, Pravin Satpute / Samyak | https://src.fedoraproject.org/repo/pkgs/samyak-fonts/samyak-fonts-1.2.2.tar.gz/ (upstream samyak-fonts 1.2.2 tarball) |
 
 ## Notes
 
@@ -62,5 +68,10 @@ which links to its official build artifacts on `gitlab.com/rit-fonts`).
 - Anek Malayalam and Baloo Chettan 2 are variable fonts (only variable TTFs are published in google/fonts).
 - Noto Sans Malayalam: only the normal-width static weights are included (the condensed/expanded widths are left out).
 - Nupuram Color / Nupuram Arrows Color: `colrv1` needs a recent browser/OS; `colrv0` works more widely.
-- Not included: Kalyani (SMC publishes only FontForge source, with no built TTF/OTF);
+- Arima is a multi-script variable font that includes Malayalam (it is unrelated to the MLU Arima).
+- Google Sans also covers Malayalam but is not included: its variable file is 4.8 MB, too heavy for phone previews.
+- Samyak Malayalam: `LICENSE.txt` is the font-exception text from the upstream README followed by the
+  GPL-3.0 text (`COPYING`).
+- Not included: Lohit Malayalam (only the FontForge source tarball is still available from official
+  sources; the built TTF release on `releases.pagure.org` is gone); Kalyani (SMC publishes only FontForge source, with no built TTF/OTF);
   RIT Unny (Latin-only cartoon font, with no Malayalam glyphs); Kartika (proprietary Microsoft font).
