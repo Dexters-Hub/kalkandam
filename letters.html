@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Malayalam alphabet with pronunciation · അക്ഷരമാല · Kalkandam</title>
+  <meta name="description" content="Learn the Malayalam alphabet: vowels, consonants, chillus, vowel signs, conjuncts and numerals, with romanisation, IPA, example words and audio. Free, made for phones.">
+  <meta name="author" content="Dexters-Hub (Alwin John)">
+  <link rel="canonical" href="https://kalkandam.in/letters">
+  <meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b0c" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kalkandam">
+  <meta property="og:url" content="https://kalkandam.in/letters">
+  <meta property="og:title" content="Malayalam alphabet with pronunciation · Kalkandam">
+  <meta property="og:description" content="Every Malayalam letter with romanisation, IPA, example words and audio.">
+  <meta property="og:image" content="https://kalkandam.in/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <script src="./js/theme.js?v=5"></script>
+  <link rel="stylesheet" href="./css/app.css?v=5">
+  <script defer src="./vendor/gsap/gsap.min.js"></script>
+  <script type="module" src="./js/letters.js?v=5"></script>
+</head>
+<body class="letters-page">
+  <a class="skip" href="#letters">Skip to letters</a>
+
+  <header class="top">
+    <a class="brand" href="/#fonts" aria-label="Kalkandam, home">
+      <img class="brand-mark" src="./assets/icon.svg" width="32" height="32" alt="">
+      <span class="brand-en">Kalkandam</span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="/#fonts" data-tab="fonts">Fonts</a>
+      <a href="/#convert" data-tab="convert">Convert</a>
+      <a href="/#try" data-tab="try">Try your font</a>
+    </nav>
+    <div class="top-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg>
+      </button>
+      <a class="star" id="star" href="https://github.com/Dexters-Hub/kalkandam" target="_blank" rel="noopener" aria-label="Star Kalkandam on GitHub">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span class="star-label">Star</span>
+        <span class="star-count" id="star-count" hidden></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="view letters-view">
+    <section class="letters-hero">
+      <p class="eyebrow"><a href="/">Kalkandam</a> · Learn</p>
+      <h1>Malayalam alphabet <span lang="ml">അക്ഷരമാല</span></h1>
+      <p class="lede">Every letter with its sound. Tap a letter to hear it<span id="speech-note"></span>.</p>
+      <div class="letters-tools">
+        <label class="ctl"><span>Font</span><select id="letters-font" aria-label="Font for the letters"></select></label>
+        <div class="chips small" id="letters-jump" role="navigation" aria-label="Sections"></div>
+      </div>
+    </section>
+    <div id="letters" tabindex="-1"></div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <nav class="bottom-nav" aria-label="Sections">
+    <a href="/#fonts" data-tab="fonts"><span aria-hidden="true" lang="ml">അ</span>Fonts</a>
+    <a href="/#convert" data-tab="convert"><span aria-hidden="true">⇄</span>Convert</a>
+    <a href="/#try" data-tab="try"><span aria-hidden="true">+</span>Your font</a>
+  </nav>
+
+  <footer class="foot">
+    <div class="foot-main">
+      <div class="foot-credit">
+        <p class="made">Built by <a href="https://github.com/Dexters-Hub" target="_blank" rel="noopener">Dexters-Hub</a> <span class="aka">(aka <a href="https://www.alwinjohn.com/" target="_blank" rel="noopener">Alwin John</a>)</span></p>
+        <p class="foot-links">
+          <a href="/letters">Malayalam alphabet</a>
+          <a href="https://github.com/Dexters-Hub/kalkandam" target="_blank" rel="noopener">Source on GitHub</a>
+          <a href="https://github.com/Dexters-Hub/kalkandam/issues/new" target="_blank" rel="noopener">Suggest a font</a>
+          <a href="https://github.com/sponsors/Dexters-Hub" target="_blank" rel="noopener"><span aria-hidden="true">♥</span> Sponsor on GitHub</a>
+        </p>
+      </div>
+      <div class="foot-cta">
+        <a class="ph" href="https://www.producthunt.com/products/kalkandam?utm_source=kalkandam&utm_medium=footer" target="_blank" rel="noopener">
+          <svg class="ph-logo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#fff"/><path d="M22.7 20H17v-6h5.7a3 3 0 1 1 0 6zm0-10H13v20h4v-6h5.7a7 7 0 1 0 0-14z" fill="#ff6154" fill-rule="evenodd"/></svg>
+          <span>Product Hunt</span>
+        </a>
+        <a class="bmc" href="https://buymeacoffee.com/alwinjohn" target="_blank" rel="noopener">
+          <svg class="bmc-cup" viewBox="0 0 26 32" aria-hidden="true"><path d="M3 9h20l-2.4 19.2A3 3 0 0 1 17.6 31H8.4a3 3 0 0 1-3-2.8L3 9z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><path d="M1.5 6.5h23v3h-23z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><path d="M4.5 6.5l1.2-3.8A1.5 1.5 0 0 1 7.1 1.7h11.8a1.5 1.5 0 0 1 1.4 1L21.5 6.5" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><path d="M5.6 15.5h14.8l-1 8.5H6.6z" fill="#ffdd00" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          <span>Buy me a coffee</span>
+        </a>
+      </div>
+    </div>
+    <p class="fine"><span lang="ml">കൽക്കണ്ടം</span> is free and open source. Fonts belong to their designers; check each font's licence before commercial use.</p>
+  </footer>
+</body>
+</html>
