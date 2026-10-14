@@ -5,5 +5,9 @@
     "directory": "./",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none"
-  }
+  },
+  "routes": [
+    { "pattern": "kalkandam.in", "custom_domain": true },
+    { "pattern": "www.kalkandam.in", "custom_domain": true }
+  ]
 }
