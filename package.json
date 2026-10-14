@@ -19,5 +19,8 @@
   "type": "module",
   "dependencies": {
     "gsap": "3.15.0"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }
