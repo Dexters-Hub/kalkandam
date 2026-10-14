@@ -3,7 +3,7 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const enabled = Boolean(gsap) && !reduced;
 
 if (enabled) {
-  gsap.registerPlugin(window.ScrollTrigger, window.Flip);
+  gsap.registerPlugin(window.Flip);
   gsap.defaults({ ease: 'power3.out', duration: 0.5 });
 }
 
@@ -66,11 +66,13 @@ export function heroCycler({ el, label, pick, render, interval = 2400 }) {
 export function revealCards(cards) {
   if (!enabled) return;
   gsap.set(cards, { opacity: 0, y: 28 });
-  window.ScrollTrigger.batch(cards, {
-    start: 'top bottom-=30',
-    once: true,
-    onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, stagger: 0.06, duration: 0.7, overwrite: true }),
-  });
+  const io = new IntersectionObserver((entries) => {
+    const batch = entries.filter((e) => e.isIntersecting).map((e) => e.target);
+    if (!batch.length) return;
+    for (const el of batch) io.unobserve(el);
+    gsap.to(batch, { opacity: 1, y: 0, stagger: 0.06, duration: 0.7, overwrite: true });
+  }, { rootMargin: '0px 0px -30px 0px' });
+  for (const card of cards) io.observe(card);
 }
 
 export function flipGrid(cards, mutate) {
@@ -90,7 +92,6 @@ export function flipGrid(cards, mutate) {
     prune: true,
     onEnter: (els) => els.length && gsap.fromTo(els, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.45, delay: 0.1 }),
     onLeave: (els) => els.length && gsap.to(els, { opacity: 0, scale: 0.94, duration: 0.25 }),
-    onComplete: () => window.ScrollTrigger.refresh(),
   });
   if (grid && before !== after) {
     gsap.fromTo(grid, { height: before }, { height: after, duration: 0.55, ease: 'power3.inOut', clearProps: 'height' });
@@ -166,20 +167,27 @@ export function closeSheet(dialog) {
 export function dragToDismiss(dialog, handle) {
   let startY = null;
   let dy = 0;
+  let dragging = false;
   handle.addEventListener('pointerdown', (e) => {
-    if (!isPhone() || dialog.scrollTop > 0) return;
+    if (!isPhone() || dialog.scrollTop > 0 || e.target.closest('button, a, input, select, textarea')) return;
     startY = e.clientY;
     dy = 0;
-    handle.setPointerCapture(e.pointerId);
+    dragging = false;
   });
   handle.addEventListener('pointermove', (e) => {
     if (startY === null) return;
     dy = Math.max(0, e.clientY - startY);
-    if (gsap) gsap.set(dialog, { y: dy });
+    if (!dragging && dy > 6) {
+      dragging = true;
+      handle.setPointerCapture(e.pointerId);
+    }
+    if (dragging && gsap) gsap.set(dialog, { y: dy });
   });
   const end = () => {
     if (startY === null) return;
     startY = null;
+    if (!dragging) return;
+    dragging = false;
     if (dy > 110) {
       if (enabled) {
         gsap.to(dialog, {

@@ -45,7 +45,7 @@
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 
 body {
   margin: 0;
@@ -212,7 +212,7 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
   .composer.compact #sample { min-height: 0; height: 42px; font-size: 1rem; }
 }
 
-.filters { display: grid; gap: 12px; margin: 24px 0 6px; }
+.filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 24px 0 6px; }
 #search {
   width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line);
   padding: 10px 2px; outline: none; font-size: 1rem; border-radius: 0;
@@ -293,13 +293,13 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
 .panel h1 { margin: 8px 0 6px; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 650; letter-spacing: -.035em; }
 .lede { color: var(--muted); margin: 0 0 22px; }
 .field { display: grid; gap: 6px; margin-bottom: 12px; color: var(--muted); font-size: .85rem; }
-.field.inline { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.field.inline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 14px; }
 .field textarea, .result textarea, .field select, .result select {
   width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
   padding: 12px 14px; color: var(--text); font-size: 1.05rem; outline: none; transition: border-color .2s;
 }
 .field textarea:focus { border-color: var(--line-strong); }
-.field.inline select { width: auto; }
+.field.inline select { width: auto; max-width: 100%; min-width: 0; }
 .result textarea { font-size: 1.4rem; background: var(--sunk); border-color: transparent; }
 .actions { display: flex; gap: 8px; margin: 14px 0; }
 .actions.wrap { flex-wrap: wrap; }
@@ -399,12 +399,13 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .foot-cta .bmc:hover { box-shadow: 0 4px 14px -4px rgb(0 0 0 / .3); }
 .bmc-cup { width: 20px; height: 26px; flex: none; }
 @media (max-width: 559px) {
-  .foot-cta { width: 100%; }
-  .foot-cta a { flex: 1; padding-left: 10px; padding-right: 12px; }
+  .foot-cta { width: 100%; flex-wrap: wrap; }
+  .foot-cta a { flex: 1 1 150px; padding-left: 10px; padding-right: 12px; }
 }
 .fine { margin: 14px 0 0; font-size: .78rem; }
 
 @media (pointer: coarse) {
+  #search, #sample, .sheet-text, .field textarea, .field select, .result textarea, .result select, .ctl select { font-size: max(16px, 1em); }
   .card-styles button { padding: 5px 10px; font-size: .78rem; }
   .chips.small button { padding: 6px 13px; }
   .card-actions > * { padding: 14px 4px; }

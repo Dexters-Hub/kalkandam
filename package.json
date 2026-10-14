@@ -27,7 +27,7 @@
     "start": "python3 -m http.server 8000",
     "build:fonts": "python3 scripts/build_fonts.py",
     "test": "node --test",
-    "vendor:gsap": "mkdir -p vendor/gsap && cp node_modules/gsap/dist/gsap.min.js node_modules/gsap/dist/ScrollTrigger.min.js node_modules/gsap/dist/Flip.min.js vendor/gsap/"
+    "vendor:gsap": "mkdir -p vendor/gsap && cp node_modules/gsap/dist/gsap.min.js node_modules/gsap/dist/Flip.min.js vendor/gsap/"
   },
   "dependencies": {
     "gsap": "3.15.0"
