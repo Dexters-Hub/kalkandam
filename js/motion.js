@@ -3,7 +3,7 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const enabled = Boolean(gsap) && !reduced;
 
 if (enabled) {
-  gsap.registerPlugin(window.Flip);
+  if (window.Flip) gsap.registerPlugin(window.Flip);
   gsap.defaults({ ease: 'power3.out', duration: 0.5 });
 }
 
@@ -76,7 +76,7 @@ export function revealCards(cards) {
 }
 
 export function flipGrid(cards, mutate) {
-  if (!enabled) { mutate(); return; }
+  if (!enabled || !window.Flip) { mutate(); return; }
   const grid = cards[0]?.parentElement;
   const before = grid ? grid.offsetHeight : 0;
   const state = window.Flip.getState(cards, { props: 'opacity' });
