@@ -10,7 +10,7 @@ Type once and see it in every font. Built for phones.
 
 [**Open Kalkandam →**](https://kalkandam.in)
 
-[![GitHub stars](https://img.shields.io/github/stars/Dexters-Hub/kalkandam?style=flat&color=ff4f1f&label=stars)](https://github.com/Dexters-Hub/kalkandam/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/Dexters-Hub/kalkandam?style=flat&logo=github&label=stars&color=ff4f1f)](https://github.com/Dexters-Hub/kalkandam/stargazers)
 [![Live site](https://img.shields.io/badge/live-kalkandam.in-121212)](https://kalkandam.in)
 [![Fonts](https://img.shields.io/badge/fonts-697-121212)](#the-collection)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/Dexters-Hub?label=sponsors&logo=githubsponsors&color=ea4aaa)](https://github.com/sponsors/Dexters-Hub)
