@@ -14,6 +14,7 @@ Type once and see it in every font. Built for phones.
 [![Live site](https://img.shields.io/badge/live-kalkandam.in-121212)](https://kalkandam.in)
 [![Fonts](https://img.shields.io/badge/fonts-697-121212)](#the-collection)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/Dexters-Hub?label=sponsors&logo=githubsponsors&color=ea4aaa)](https://github.com/sponsors/Dexters-Hub)
+[![License: MIT](https://img.shields.io/badge/license-MIT-121212)](LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-alwinjohn-ffdd00?logo=buymeacoffee&logoColor=000)](https://buymeacoffee.com/alwinjohn)
 [![Product Hunt](https://img.shields.io/badge/Product%20Hunt-Kalkandam-ff6154?logo=producthunt&logoColor=fff)](https://www.producthunt.com/products/kalkandam)
 
@@ -118,3 +119,7 @@ To keep it free and growing (more fonts, a better converter, hosting), [sponsor 
 Built by [Dexters-Hub](https://github.com/Dexters-Hub) (aka [Alwin John](https://www.alwinjohn.com/)) · [Product Hunt](https://www.producthunt.com/@alwinjohn)
 
 Fonts belong to their designers and foundries. The Unicode set is openly licensed (see [`SOURCES.md`](fonts/unicode/SOURCES.md)); check each font's terms before commercial use. Thanks to [kuttipencil.in](https://kuttipencil.in), the long-time home of Malayalam typing and ML / FML conversion, and to [Swathanthra Malayalam Computing](https://smc.org.in), [Rachana Institute of Typography](https://rachana.org.in) and everyone who has kept Malayalam type alive.
+
+## License
+
+Code is [MIT](LICENSE) © 2024-2026 Alwin John (Dexters-Hub). Fonts keep their own licences; see [`SOURCES.md`](fonts/unicode/SOURCES.md) for the openly licensed set.

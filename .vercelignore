@@ -9,3 +9,4 @@ _headers
 wrangler.jsonc
 .assetsignore
 /.github
+/LICENSE
