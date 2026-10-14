@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /fonts/
+
+Sitemap: https://kalkandam.vercel.app/sitemap.xml
