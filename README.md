@@ -14,7 +14,7 @@ Type once and see it in every font. Built for phones.
 [![Live site](https://img.shields.io/badge/live-kalkandam.in-121212)](https://kalkandam.in)
 [![Fonts](https://img.shields.io/badge/fonts-697-121212)](#the-collection)
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-alwinjohn-ffdd00?logo=buymeacoffee&logoColor=000)](https://buymeacoffee.com/alwinjohn)
-[![Product Hunt](https://img.shields.io/badge/Product%20Hunt-@alwinjohn-da552f?logo=producthunt&logoColor=fff)](https://www.producthunt.com/@alwinjohn)
+[![Product Hunt](https://img.shields.io/badge/Product%20Hunt-Kalkandam-ff6154?logo=producthunt&logoColor=fff)](https://www.producthunt.com/products/kalkandam)
 
 <a href="https://kalkandam.in"><img src="assets/og.png" alt="Kalkandam: the word കൽക്കണ്ടം set in several Malayalam fonts" width="820"></a>
 
@@ -108,7 +108,7 @@ docs/launch/            Product Hunt kit and screenshots
 
 ## Support
 
-If Kalkandam saved you time, [⭐ star the repo](https://github.com/Dexters-Hub/kalkandam) or [buy me a coffee](https://buymeacoffee.com/alwinjohn).
+If Kalkandam saved you time, [⭐ star the repo](https://github.com/Dexters-Hub/kalkandam), [upvote it on Product Hunt](https://www.producthunt.com/products/kalkandam) or [buy me a coffee](https://buymeacoffee.com/alwinjohn).
 
 ## Credits
 

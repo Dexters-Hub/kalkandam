@@ -389,6 +389,13 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 }
 .foot-links .bmc:hover { color: #000; box-shadow: 0 4px 14px -4px rgb(0 0 0 / .3); }
 .bmc-cup { width: 20px; height: 26px; flex: none; }
+.foot-links .ph {
+  display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px 0 8px;
+  background: #ff6154; color: #fff; border-radius: 999px; font-weight: 600; font-size: .95rem;
+  transition: box-shadow .2s, filter .2s;
+}
+.foot-links .ph:hover { color: #fff; filter: brightness(1.04); box-shadow: 0 4px 14px -4px rgb(255 97 84 / .55); }
+.ph-logo { width: 30px; height: 30px; flex: none; }
 .fine { margin: 14px 0 0; font-size: .78rem; }
 
 @media (pointer: coarse) {
