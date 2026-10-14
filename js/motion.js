@@ -75,20 +75,26 @@ export function revealCards(cards) {
 
 export function flipGrid(cards, mutate) {
   if (!enabled) { mutate(); return; }
+  const grid = cards[0]?.parentElement;
+  const before = grid ? grid.offsetHeight : 0;
   const state = window.Flip.getState(cards, { props: 'opacity' });
   mutate();
   const visible = cards.filter((c) => !c.hidden);
   if (visible.length) gsap.set(visible, { y: 0, opacity: 1 });
+  const after = grid ? grid.offsetHeight : 0;
   window.Flip.from(state, {
     duration: 0.55,
     ease: 'power3.inOut',
-    absolute: true,
+    absoluteOnLeave: true,
     nested: true,
     prune: true,
     onEnter: (els) => els.length && gsap.fromTo(els, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.45, delay: 0.1 }),
     onLeave: (els) => els.length && gsap.to(els, { opacity: 0, scale: 0.94, duration: 0.25 }),
     onComplete: () => window.ScrollTrigger.refresh(),
   });
+  if (grid && before !== after) {
+    gsap.fromTo(grid, { height: before }, { height: after, duration: 0.55, ease: 'power3.inOut', clearProps: 'height' });
+  }
 }
 
 export function ripplePreviews(previews) {
