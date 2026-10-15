@@ -387,7 +387,7 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .toast.show { opacity: 1; }
 @media (min-width: 760px) { .toast { bottom: 28px; } }
 
-.foot { max-width: 1200px; margin: 40px auto 0; padding: 22px var(--pad) 30px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+.foot { width: 100%; max-width: 1200px; margin: 40px auto 0; padding: 22px var(--pad) 30px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
 .foot-main { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 24px; }
 .foot-credit { display: grid; gap: 6px; }
 .made { margin: 0; color: var(--text); font-weight: 500; }
