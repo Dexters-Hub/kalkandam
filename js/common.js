@@ -93,11 +93,11 @@ export async function initSiteStats(motion) {
   if (!res.ok) return;
   const t = await res.json();
   const items = [
-    [t.visit, 'visits'],
-    [t.download, 'fonts downloaded'],
-    [t.image, 'images made'],
-    [t.convert, 'conversions'],
-  ].filter(([n]) => Number.isFinite(n) && n > 0);
+    [t.visit, 'visit', 'visits'],
+    [t.download, 'font downloaded', 'fonts downloaded'],
+    [t.image, 'image made', 'images made'],
+    [t.convert, 'conversion', 'conversions'],
+  ].filter(([n]) => Number.isFinite(n) && n > 0).map(([n, one, many]) => [n, n === 1 ? one : many]);
   if (!items.length) return;
   el.replaceChildren();
   items.forEach(([n, label], i) => {
