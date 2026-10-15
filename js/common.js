@@ -69,3 +69,62 @@ export function initStars(motion) {
   setInterval(update, STAR_TTL);
   document.addEventListener('visibilitychange', update);
 }
+
+export function track(event) {
+  try {
+    const body = new Blob([event], { type: 'text/plain' });
+    if (navigator.sendBeacon?.('/api/hit', body)) return;
+    fetch('/api/hit', { method: 'POST', body: event, keepalive: true }).catch(() => {});
+  } catch {}
+}
+
+export function trackVisit() {
+  try {
+    if (sessionStorage.getItem('kalkandam:visited')) return;
+    sessionStorage.setItem('kalkandam:visited', '1');
+  } catch {}
+  track('visit');
+}
+
+export async function initSiteStats(motion) {
+  const el = $('#site-stats');
+  if (!el) return;
+  const res = await fetch('/api/stats');
+  if (!res.ok) return;
+  const t = await res.json();
+  const items = [
+    [t.visit, 'visits'],
+    [t.download, 'fonts downloaded'],
+    [t.image, 'images made'],
+    [t.convert, 'conversions'],
+  ].filter(([n]) => Number.isFinite(n) && n > 0);
+  if (!items.length) return;
+  el.replaceChildren();
+  items.forEach(([n, label], i) => {
+    if (i) el.append(' · ');
+    const num = document.createElement('b');
+    num.textContent = '0';
+    el.append(num, ` ${label}`);
+    motion.countUp(num, n);
+  });
+  el.hidden = false;
+}
+
+export function initFacts(facts, motion) {
+  const box = $('#fact');
+  if (!box || !facts.length) return;
+  const text = box.querySelector('.fact-text');
+  const src = box.querySelector('.fact-src');
+  let i = Math.floor(Math.random() * facts.length);
+  const show = () => {
+    text.textContent = facts[i].text;
+    src.href = facts[i].src;
+  };
+  show();
+  box.hidden = false;
+  box.querySelector('.fact-next').addEventListener('click', () => {
+    i = (i + 1) % facts.length;
+    show();
+    motion.pulse(text);
+  });
+}

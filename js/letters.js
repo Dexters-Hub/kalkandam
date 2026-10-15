@@ -1,7 +1,8 @@
-import { toManglish } from './malayalam.js?v=5';
-import * as motion from './motion.js?v=5';
-import { store, initThemeToggle, initStars } from './common.js?v=5';
-import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=5';
+import { toManglish } from './malayalam.js?v=6';
+import * as motion from './motion.js?v=6';
+import { store, initThemeToggle, initStars, trackVisit, initSiteStats, initFacts } from './common.js?v=6';
+import { FACTS } from './facts.js?v=6';
+import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=6';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const FONT_VERSION = 2;
@@ -156,3 +157,6 @@ safely(() => motion.revealCards([...document.querySelectorAll('.lt-section')]));
 safely(motion.pressFeedback);
 safely(() => initThemeToggle(motion));
 safely(() => initStars(motion));
+safely(() => initFacts(FACTS, motion));
+safely(trackVisit);
+initSiteStats(motion).catch(() => {});

@@ -1,6 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=5';
-import * as motion from './motion.js?v=5';
-import { store, REPO, initThemeToggle, initStars } from './common.js?v=5';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=6';
+import * as motion from './motion.js?v=6';
+import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=6';
+import { FACTS } from './facts.js?v=6';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -78,13 +79,17 @@ const nearViewport = (el, margin = window.innerHeight) => {
 };
 const cssFamily = (font) => `k-${font.id}`;
 
-function loadFont(font) {
+function loadFont(font, attempt = 0) {
   if (!fontLoads.has(font.id)) {
     const face = new FontFace(cssFamily(font), `url("${encodeURI(font.web)}?v=${FONT_VERSION}")`, { display: 'swap' });
     fontLoads.set(font.id, face.load().then((loaded) => {
       document.fonts.add(loaded);
       loadedFonts.add(font.id);
       return loaded;
+    }).catch((err) => {
+      fontLoads.delete(font.id);
+      if (attempt > 0) throw err;
+      return new Promise((resolve) => setTimeout(resolve, 800)).then(() => loadFont(font, attempt + 1));
     }));
   }
   return fontLoads.get(font.id);
@@ -439,7 +444,8 @@ function onCardClick(e) {
     exportPng(card._font, card._group.encoding, state.text, {
       size: state.size * 2, ...themeColors(THEMES[state.theme]), align: 'center',
     }).then((file) => { downloadBlob(file); motion.confirm(button, 'Saved ✓'); });
-  } else if (act === 'remove') card.remove();
+  } else if (act === 'font') track('download');
+  else if (act === 'remove') card.remove();
 }
 
 function toast(msg) {
@@ -459,12 +465,14 @@ async function copyToClipboard(text) {
 }
 
 async function copyForFont(encoding, text, button) {
+  if (encoding !== 'unicode') track('convert');
   await copyToClipboard(copyText(text, encoding));
   motion.confirm(button);
   toast(encoding === 'unicode' ? 'Copied' : `Copied in ${encoding === 'fml' ? 'FML' : 'ML'} encoding. Paste into a DTP app with this font`);
 }
 
 function downloadBlob({ blob, name }) {
+  track('image');
   const url = URL.createObjectURL(blob);
   const a = Object.assign(document.createElement('a'), { href: url, download: name });
   document.body.append(a);
@@ -631,6 +639,7 @@ function initSheet() {
   $('#dl-transparent').addEventListener('click', async () => {
     downloadBlob(await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(true)));
   });
+  $('#dl-font').addEventListener('click', () => track('download'));
   $('#copy-text').addEventListener('click', (e) => copyForFont(sheetCard._group.encoding, $('#sheet-text').value, e.currentTarget));
 
   const share = $('#share-png');
@@ -641,6 +650,7 @@ function initSheet() {
       const { blob, name } = await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false));
       try {
         await navigator.share({ files: [new File([blob], name, { type: 'image/png' })], title: 'Kalkandam' });
+        track('image');
       } catch {}
     });
   }
@@ -665,13 +675,14 @@ let lastConversion = null;
 
 function initConverter() {
   const input = $('#conv-in');
-  input.value = store.get('convIn', '');
+  input.value = store.get('convIn', 'എന്റെ കേരളം എത്ര സുന്ദരം. കൽക്കണ്ടം പോലെ മധുരം!');
   input.addEventListener('input', () => store.set('convIn', input.value));
   const select = $('#conv-font');
 
   for (const b of $$('[data-conv]')) {
     b.addEventListener('click', () => {
       const conv = CONVERTERS[b.dataset.conv];
+      track('convert');
       const src = input.value;
       lastConversion = { kind: b.dataset.conv, out: conv.run(src), src };
       const firstTime = $('#conv-result').hidden;
@@ -859,6 +870,9 @@ async function main() {
   safely(motion.pressFeedback);
   safely(() => initStars(motion));
   safely(() => initThemeToggle(motion));
+  safely(() => initFacts(FACTS, motion));
+  safely(trackVisit);
+  initSiteStats(motion).catch(() => {});
 }
 
 main().catch((err) => {
