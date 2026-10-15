@@ -1,6 +1,6 @@
-import * as motion from '/js/motion.js?v=12';
-import { initThemeToggle, initStars, initFacts } from '/js/common.js?v=12';
-import { FACTS } from '/js/facts.js?v=12';
+import * as motion from '/js/motion.js?v=13';
+import { initThemeToggle, initStars, initFacts } from '/js/common.js?v=13';
+import { FACTS } from '/js/facts.js?v=13';
 
 const WITH_DIGITS = [
   'unicode-anekmalayalam-wdth-wght', 'unicode-anjalioldlipi-regular', 'unicode-baloochettan2-wght', 'unicode-chilanka-regular',
