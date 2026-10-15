@@ -72,4 +72,7 @@ test('Manglish', () => {
   assert.equal(fromManglish('ningaL'), 'നിങ്ങൾ');
   assert.equal(fromManglish('avan~'), 'അവന്');
   assert.equal(fromManglish('amma 2024'), 'അമ്മ 2024');
+  assert.equal(fromManglish('aarmaadam'), 'ആർമാദം');
+  assert.equal(fromManglish('karmam'), 'കർമം');
+  assert.equal(fromManglish('aarya'), 'ആര്യ');
 });

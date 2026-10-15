@@ -328,6 +328,9 @@ export function fromManglish(text) {
       } else if (text[i] === '~') {
         out += cluster + VIRAMA;
         i++;
+      } else if (cluster === 'ര' && /^[bcdfgjklmnpqstvxzBDLNST]/.test(text.slice(i))) {
+        // r before a consonant is the chillu in modern spelling (ആർമാദം, കാർത്തിക); ര്യ stays a conjunct.
+        out += 'ർ';
       } else if (i < text.length && /[A-Za-z]/.test(text[i])) {
         out += cluster + VIRAMA;
       } else if (cluster === 'മ' && out && /[ഀ-ൿ]$/.test(out)) {

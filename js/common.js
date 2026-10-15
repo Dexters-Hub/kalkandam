@@ -138,3 +138,27 @@ export function initFacts(facts, motion, interval = 8000) {
     motion.crossfade(body, show);
   }, interval);
 }
+
+const NOT_PEOPLE = new Set(['Google Noto', 'Rachana Institute of Typography']);
+
+export const personSlug = (name) => `p-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+
+// "Ek Type (Maithili Shingre, Yesha Goshar)" -> the two people; "R K Joshi, Rajith Kumar K M (CDAC Mumbai)" -> the two people.
+export function designerNames(credit) {
+  let text = (credit || '').trim();
+  const paren = text.match(/^(.+?)\s*\((.+)\)$/);
+  if (paren) {
+    const commas = (s) => (s.match(/,/g) || []).length;
+    text = commas(paren[2]) > commas(paren[1]) ? paren[2] : paren[1];
+  }
+  return text.split(',').map((s) => s.trim()).filter((s) => s && !NOT_PEOPLE.has(s));
+}
+
+let infoLoad = null;
+export function loadFontInfo() {
+  infoLoad ||= fetch('/data/font-info.json', { cache: 'no-cache' })
+    .then((r) => (r.ok ? r.json() : {}))
+    .catch(() => ({}))
+    .then((d) => ({ people: d.people || {}, fonts: d.fonts || {} }));
+  return infoLoad;
+}
