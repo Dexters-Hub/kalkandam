@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Share who designed a font (no account needed)
+    url: https://kalkandam.in/about#contribute
+    about: The form on the About page works without a GitHub account.

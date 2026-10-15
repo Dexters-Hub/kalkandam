@@ -1,0 +1,22 @@
+name: Suggest a font
+description: A Malayalam font that should be on Kalkandam
+labels: [font-request]
+body:
+  - type: input
+    id: font
+    attributes:
+      label: Font name
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Where to get it
+      description: The designer's or foundry's page, ideally showing the licence.
+      placeholder: "https://"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?

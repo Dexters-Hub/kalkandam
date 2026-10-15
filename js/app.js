@@ -564,6 +564,52 @@ async function copyForFont(encoding, text, button) {
   toast(encoding === 'unicode' ? 'Copied' : `Copied in ${encoding === 'fml' ? 'FML' : 'ML'} encoding. Paste into a DTP app with this font`);
 }
 
+async function downloadFamily(g, button) {
+  if (button.disabled) return;
+  button.disabled = true;
+  const label = button.textContent;
+  const fonts = g.styles.filter((f) => f.file);
+  const folder = `${g.family} (${g.collection})`.replace(/[\\/:*?"<>|]+/g, '-');
+  try {
+    const { makeZip } = await import('./zip.js?v=14');
+    const files = [];
+    let done = 0;
+    button.textContent = `Preparing 0/${fonts.length}…`;
+    await Promise.all(fonts.map(async (font) => {
+      const res = await fetch(downloadUrl(font));
+      if (!res.ok) throw new Error(`${res.status} ${font.file}`);
+      files.push({ name: `${folder}/${font.file.split('/').pop()}`, data: new Uint8Array(await res.arrayBuffer()) });
+      button.textContent = `Preparing ${++done}/${fonts.length}…`;
+    }));
+    files.sort((a, b) => a.name.localeCompare(b.name));
+    const lic = licenceStatus(g.styles[0]);
+    const notes = [
+      `${g.family} (${g.collection}), ${fonts.length} styles`,
+      g.styles[0].designer ? `Designer: ${g.styles[0].designer}` : '',
+      `Licence: ${g.styles[0].license || lic.tag}. ${lic.note}`,
+      g.styles[0].source ? `Source: ${g.styles[0].source}` : '',
+      g.styles[0].copyright ? `Copyright notice: ${g.styles[0].copyright}` : '',
+      '',
+      'Downloaded from https://kalkandam.in',
+    ].filter((l, i, a) => l || a[i - 1]);
+    files.push({ name: `${folder}/README.txt`, data: new TextEncoder().encode(`${notes.join('\n')}\n`) });
+    const url = URL.createObjectURL(makeZip(files));
+    const a = Object.assign(document.createElement('a'), { href: url, download: `${folder}.zip` });
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    track('download');
+    toast(`${fonts.length} styles saved`);
+  } catch (err) {
+    console.error(err);
+    toast('Download failed. Please try again.');
+  } finally {
+    button.disabled = false;
+    button.textContent = label;
+  }
+}
+
 function downloadBlob({ blob, name }) {
   track('image');
   const url = URL.createObjectURL(blob);
@@ -703,6 +749,9 @@ function renderSheet() {
     dl.href = downloadUrl(font);
     dl.setAttribute('download', font.file.split('/').pop());
   }
+  const zipBtn = $('#dl-family');
+  zipBtn.hidden = Boolean(local) || g.styles.length < 2;
+  if (!zipBtn.disabled) zipBtn.textContent = `All ${g.styles.length} styles (.zip)`;
   const lic = licenceStatus(font);
   const licBox = $('#sheet-lic');
   licBox.hidden = Boolean(local);
@@ -811,6 +860,7 @@ function initSheet() {
     downloadBlob(await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(true)));
   });
   $('#dl-font').addEventListener('click', () => track('download'));
+  $('#dl-family').addEventListener('click', (e) => downloadFamily(sheetCard._group, e.currentTarget));
   $('#copy-text').addEventListener('click', (e) => copyForFont(sheetCard._group.encoding, $('#sheet-text').value, e.currentTarget));
 
   const share = $('#share-png');

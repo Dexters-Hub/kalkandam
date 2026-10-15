@@ -547,9 +547,10 @@ html[data-view="convert"] #view-convert, html[data-view="try"] #view-try { displ
 .credit-who { color: var(--muted); }
 .credit-lic { color: var(--muted); font-size: .76rem; padding: 1px 7px; border-radius: 6px; background: var(--sunk); }
 @media (prefers-reduced-motion: reduce) { .credit-sample { transition: none; } }
-.dtp-counts { display: flex; flex-wrap: wrap; gap: 10px; min-height: 60px; }
-.dtp-counts div { padding: 10px 16px; border-radius: 12px; background: var(--sunk); color: var(--muted); font-size: .86rem; }
-.dtp-counts b { color: var(--text); font-size: 1.3rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.dtp-counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 620px; min-height: 76px; }
+@media (max-width: 559px) { .dtp-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); min-height: 162px; } }
+.dtp-counts div { display: grid; gap: 2px; padding: 12px 16px; border-radius: 12px; background: var(--sunk); color: var(--muted); font-size: .82rem; }
+.dtp-counts b { color: var(--text); font-size: 1.6rem; font-weight: 650; line-height: 1.1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .thanks { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: .92rem; line-height: 1.55; max-width: 66ch; }
 .contrib-form { max-width: 620px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .contrib-form input, .contrib-form textarea {
@@ -608,3 +609,19 @@ html[data-view="convert"] #view-convert, html[data-view="try"] #view-try { displ
 .sheet-info p { margin: 0 0 4px; }
 .sheet-info a { color: inherit; text-underline-offset: 3px; }
 .sheet-info-by { color: var(--muted); font-size: .8rem; }
+.combo { position: relative; }
+.combo label { color: var(--muted); }
+.combo-list {
+  position: absolute; z-index: 20; top: 100%; left: 0; right: 0; margin: 4px 0 0; padding: 4px; list-style: none;
+  max-height: min(300px, 50vh); overflow-y: auto; overscroll-behavior: contain;
+  border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow);
+}
+.combo-list[hidden] { display: none; }
+.combo-list li {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 9px 10px; border-radius: 8px;
+  color: var(--text); font-size: .95rem; cursor: pointer;
+}
+.combo-list li small { flex: none; color: var(--muted); font-size: .72rem; font-weight: 600; }
+.combo-list li[aria-selected="true"], .combo-list li:hover { background: var(--sunk); }
+.combo-list .combo-empty { color: var(--muted); cursor: default; font-size: .86rem; }
+.combo-list .combo-empty:hover { background: none; }

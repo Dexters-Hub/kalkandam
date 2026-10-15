@@ -74,7 +74,7 @@ function renderCredits(fonts) {
   const dtp = $('#dtp-counts');
   for (const c of ['MLU', 'FML', 'ML-TT', 'ML-KV']) {
     if (!counts[c]) continue;
-    dtp.append(el('div', {}, el('b', {}, String(counts[c].size)), el('span', {}, ` ${c} families`)));
+    dtp.append(el('div', {}, el('b', {}, String(counts[c].size)), el('span', {}, `${c} families`)));
   }
 }
 
@@ -126,13 +126,81 @@ async function initTurnstile(sitekey) {
   turnstileWidget = window.turnstile.render('#cf-turnstile', { sitekey, theme: 'auto', size: 'flexible' });
 }
 
+function initFontPicker(fonts) {
+  const input = $('#cf-font');
+  const list = $('#cf-fonts');
+  const seen = new Set();
+  const items = [];
+  for (const f of fonts) {
+    const value = `${f.family} (${f.collection})`;
+    if (seen.has(value)) continue;
+    seen.add(value);
+    items.push({ value, family: f.family, collection: f.collection, key: f.family.toLowerCase() });
+  }
+  items.sort((a, b) => a.family.localeCompare(b.family) || a.collection.localeCompare(b.collection));
+  let shown = [];
+  let active = -1;
+
+  const setActive = (i) => {
+    active = i;
+    [...list.children].forEach((li, j) => li.setAttribute('aria-selected', String(j === i)));
+    if (i >= 0) {
+      input.setAttribute('aria-activedescendant', `cf-opt-${i}`);
+      list.children[i].scrollIntoView({ block: 'nearest' });
+    } else input.removeAttribute('aria-activedescendant');
+  };
+  const close = () => {
+    list.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    setActive(-1);
+  };
+  const open = () => {
+    const q = input.value.trim().toLowerCase().replace(/\s*\(.*$/, '');
+    const starts = items.filter((it) => it.key.startsWith(q));
+    const contains = q ? items.filter((it) => !it.key.startsWith(q) && it.key.includes(q)) : [];
+    shown = [...starts, ...contains].slice(0, 60);
+    list.replaceChildren(...shown.map((it, i) => el('li', { id: `cf-opt-${i}`, role: 'option', 'aria-selected': 'false', 'data-i': String(i) },
+      el('span', {}, it.family), el('small', {}, it.collection))));
+    if (!shown.length) list.append(el('li', { class: 'combo-empty' }, 'Not in the list? Just type the name.'));
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+    setActive(-1);
+  };
+  const pick = (i) => {
+    if (!shown[i]) return;
+    input.value = shown[i].value;
+    close();
+  };
+
+  input.addEventListener('focus', open);
+  input.addEventListener('input', open);
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (list.hidden) open();
+      const n = shown.length;
+      if (n) setActive(e.key === 'ArrowDown' ? (active + 1) % n : (active - 1 + n) % n);
+    } else if (e.key === 'Enter' && !list.hidden && active >= 0) {
+      e.preventDefault();
+      pick(active);
+    } else if (e.key === 'Escape' && !list.hidden) {
+      e.preventDefault();
+      close();
+    }
+  });
+  list.addEventListener('pointerdown', (e) => e.preventDefault());
+  list.addEventListener('click', (e) => {
+    const li = e.target.closest('[data-i]');
+    if (li) pick(Number(li.dataset.i));
+  });
+}
+
 async function initForm(fonts) {
   const form = $('#contrib-form');
   const status = $('#cf-status');
   const button = $('#cf-submit');
-  const datalist = $('#cf-fonts');
-  const names = [...new Set(fonts.map((f) => `${f.family} (${f.collection})`))].sort();
-  for (const n of names) datalist.append(el('option', { value: n }));
+  initFontPicker(fonts);
 
   const params = new URLSearchParams(location.search);
   if (params.get('font')) {

@@ -70,7 +70,7 @@ npm test           # converter tests (Node 20+)
 
 No build step. Plain HTML, CSS and ES modules, with [GSAP](https://gsap.com) for animation.
 
-The footer counters (visits, downloads, images, conversions) come from a tiny Cloudflare Worker with a Durable Object. It stores totals only: no cookies, no IP addresses, no personal data.
+The footer counters (visits, downloads, images, conversions) come from a tiny Cloudflare Worker with a Durable Object. It stores totals only: no cookies and no personal data. The contribution form keeps a one-way hash of the sender's IP address to limit spam; hashes older than an hour are cleared on the next submission.
 
 | Script | What it does |
 | --- | --- |
