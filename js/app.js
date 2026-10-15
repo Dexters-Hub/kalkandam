@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=11';
-import * as motion from './motion.js?v=11';
-import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=11';
-import { FACTS } from './facts.js?v=11';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=12';
+import * as motion from './motion.js?v=12';
+import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=12';
+import { FACTS } from './facts.js?v=12';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -316,10 +316,15 @@ function renderControls() {
 
   const size = $('#size');
   size.value = state.size;
+  let sizeFrame = 0;
   size.addEventListener('input', () => {
     state.size = Number(size.value);
-    store.set('size', state.size);
-    refreshText();
+    if (sizeFrame) return;
+    sizeFrame = requestAnimationFrame(() => {
+      sizeFrame = 0;
+      for (const grid of $$('.grid')) grid.style.setProperty('--size', `${state.size}px`);
+      store.set('size', state.size);
+    });
   });
 
   let searchTimer;
@@ -781,6 +786,7 @@ function route() {
   const tab = (location.hash.replace('#', '') || 'fonts').split('/')[0];
   const known = ['fonts', 'convert', 'try'].includes(tab) ? tab : 'fonts';
   for (const v of $$('.view')) v.hidden = v.dataset.view !== known;
+  document.documentElement.dataset.view = known;
   for (const a of $$('[data-tab]')) {
     a.classList.toggle('active', a.dataset.tab === known);
     if (a.dataset.tab === known) a.setAttribute('aria-current', 'page');
@@ -802,13 +808,8 @@ let heroFetches = 0;
 function initHero(fonts) {
   const stats = $('#stats');
   const collections = new Set(fonts.map((f) => f.collection)).size;
-  for (const [label, value] of [['fonts', fonts.length], ['families', FAMILIES.length], ['collections', collections]]) {
-    const row = document.createElement('div');
-    row.innerHTML = '<dt></dt><dd>0</dd>';
-    row.querySelector('dt').textContent = label;
-    stats.append(row);
-    motion.countUp(row.querySelector('dd'), value);
-  }
+  const values = [fonts.length, FAMILIES.length, collections];
+  stats.querySelectorAll('dd').forEach((dd, i) => motion.countUp(dd, values[i]));
 
   const pool = FAMILIES.filter((g) => g.collection !== 'Yours');
   let last = null;

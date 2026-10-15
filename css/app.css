@@ -254,6 +254,7 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
 
 .card {
   --h: 20;
+  content-visibility: auto; contain-intrinsic-size: auto 360px;
   position: relative; overflow: hidden;
   border-radius: var(--radius);
   border: 1px solid var(--line);
@@ -491,3 +492,10 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .nf-note { margin: 4px 0 0; font-size: .95rem; font-weight: 600; }
 .nf-fonts { margin: 2px 0 0; height: 1.4em; color: var(--muted); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .nf .fact { max-width: 720px; margin-top: 34px; text-align: left; }
+
+#grid:empty, #letters:empty { min-height: 100vh; }
+.fact[hidden] { display: flex !important; visibility: hidden; }
+.site-stats { min-height: 1.3em; }
+.site-stats[hidden] { display: block !important; visibility: hidden; }
+html[data-view="convert"] #view-fonts, html[data-view="try"] #view-fonts { display: none !important; }
+html[data-view="convert"] #view-convert, html[data-view="try"] #view-try { display: block !important; }
