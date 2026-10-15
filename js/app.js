@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=10';
-import * as motion from './motion.js?v=10';
-import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=10';
-import { FACTS } from './facts.js?v=10';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=11';
+import * as motion from './motion.js?v=11';
+import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=11';
+import { FACTS } from './facts.js?v=11';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -650,7 +650,7 @@ function initSheet() {
       const { blob, name } = await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false));
       try {
         await navigator.share({ files: [new File([blob], name, { type: 'image/png' })], title: 'Kalkandam' });
-        track('image');
+        track('share');
       } catch {}
     });
   }

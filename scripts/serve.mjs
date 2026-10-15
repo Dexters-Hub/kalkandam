@@ -10,7 +10,7 @@ const TYPES = {
   '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.otf': 'font/otf',
   '.webmanifest': 'application/manifest+json', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8',
 };
-const counts = { visit: 0, download: 0, image: 0, convert: 0 };
+const counts = { visit: 0, download: 0, image: 0, share: 0, convert: 0 };
 
 async function resolveFile(urlPath) {
   const safe = normalize(decodeURIComponent(urlPath)).replace(/^(\.\.[/\\])+/, '');
