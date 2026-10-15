@@ -18,6 +18,13 @@ Type once and see it in every font. Built for phones.
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-alwinjohn-ffdd00?logo=buymeacoffee&logoColor=000)](https://buymeacoffee.com/alwinjohn)
 [![Product Hunt](https://img.shields.io/badge/Product%20Hunt-Kalkandam-ff6154?logo=producthunt&logoColor=fff)](https://www.producthunt.com/products/kalkandam)
 
+<a href="https://www.producthunt.com/products/kalkandam?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-kalkandam">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1280500&theme=dark">
+    <img alt="Kalkandam on Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1280500&theme=light">
+  </picture>
+</a>
+
 <a href="https://kalkandam.in"><img src="assets/og.png" alt="Kalkandam: the word കൽക്കണ്ടം set in several Malayalam fonts" width="820"></a>
 
 </div>

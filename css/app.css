@@ -419,9 +419,16 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
   border-radius: 12px; text-decoration: none; white-space: nowrap;
   transition: box-shadow .2s, filter .2s;
 }
-.foot-cta .ph { padding: 0 18px 0 9px; background: #ff6154; color: #fff; border: 1px solid #ff6154; font-weight: 600; font-size: .95rem; }
-.foot-cta .ph:hover { filter: brightness(1.04); box-shadow: 0 4px 14px -4px rgb(255 97 84 / .55); }
-.ph-logo { width: 28px; height: 28px; flex: none; }
+.foot-cta .ph-badge { height: 46px; padding: 0; border-radius: 10px; flex: none; }
+.foot-cta .ph-badge:hover { box-shadow: 0 4px 14px -4px rgb(255 97 84 / .55); }
+.ph-badge img { display: block; width: auto; height: 46px; }
+.ph-badge .ph-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ph-badge .ph-light { display: none; }
+  :root:not([data-theme="light"]) .ph-badge .ph-dark { display: block; }
+}
+:root[data-theme="dark"] .ph-badge .ph-light { display: none; }
+:root[data-theme="dark"] .ph-badge .ph-dark { display: block; }
 .foot-cta .bmc {
   padding: 0 18px 0 14px; background: #ffdd00; color: #000; border: 1px solid #000;
   font-family: "Cookie", cursive; font-size: 26px; line-height: 1; letter-spacing: .2px;
