@@ -110,21 +110,27 @@ export async function initSiteStats(motion) {
   el.hidden = false;
 }
 
-export function initFacts(facts, motion) {
+export function initFacts(facts, motion, interval = 8000) {
   const box = $('#fact');
   if (!box || !facts.length) return;
+  const body = box.querySelector('.fact-body');
   const text = box.querySelector('.fact-text');
   const src = box.querySelector('.fact-src');
-  let i = Math.floor(Math.random() * facts.length);
+  const order = facts.map((_, n) => n).sort(() => Math.random() - 0.5);
+  let i = 0;
   const show = () => {
-    text.textContent = facts[i].text;
-    src.href = facts[i].src;
+    const fact = facts[order[i]];
+    text.textContent = fact.text;
+    src.href = fact.src;
   };
   show();
   box.hidden = false;
-  box.querySelector('.fact-next').addEventListener('click', () => {
-    i = (i + 1) % facts.length;
-    show();
-    motion.pulse(text);
-  });
+
+  let visible = false;
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }).observe(box);
+  setInterval(() => {
+    if (!visible || document.hidden || box.matches(':hover, :focus-within')) return;
+    i = (i + 1) % order.length;
+    motion.crossfade(body, show);
+  }, interval);
 }
