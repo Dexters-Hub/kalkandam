@@ -208,7 +208,7 @@ async function initForm(fonts) {
     if (params.get('kind') && KINDS[params.get('kind')]) $('#cf-kind').value = params.get('kind');
   }
 
-  let config = { turnstile: null, local: false };
+  let config = { turnstile: null };
   try {
     const res = await fetch('/api/config', { cache: 'no-store' });
     if (res.ok) config = await res.json();
@@ -219,6 +219,7 @@ async function initForm(fonts) {
     e.preventDefault();
     status.textContent = '';
     const data = Object.fromEntries(new FormData(form));
+    delete data['cf-turnstile-response']; // Turnstile adds this field; the token is sent once as `token`.
     if (!data.font.trim() || !data.details.trim()) {
       status.textContent = 'Please add the font name and some details.';
       return;

@@ -39,7 +39,7 @@ createServer(async (req, res) => {
     return;
   }
   if (url.pathname === '/api/config') {
-    res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end('{"turnstile":null,"local":true}');
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end('{"turnstile":null}');
     return;
   }
   if (url.pathname === '/api/contribute' && req.method === 'POST') {
