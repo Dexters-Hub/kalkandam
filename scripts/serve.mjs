@@ -40,7 +40,8 @@ createServer(async (req, res) => {
   }
   const file = await resolveFile(url.pathname === '/' ? '/index.html' : url.pathname);
   if (!file) {
-    res.writeHead(404, { 'Content-Type': 'text/plain' }).end('Not found');
+    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
+    res.end(await readFile(join(ROOT, '404.html')));
     return;
   }
   res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });

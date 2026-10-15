@@ -6,7 +6,7 @@
     "directory": "./",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "none"
+    "not_found_handling": "404-page"
   },
   "durable_objects": {
     "bindings": [{ "name": "STATS", "class_name": "Stats" }]
