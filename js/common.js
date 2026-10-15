@@ -96,6 +96,7 @@ export async function initSiteStats(motion) {
     [t.visit, 'visit', 'visits'],
     [t.download, 'font downloaded', 'fonts downloaded'],
     [t.image, 'image made', 'images made'],
+    [t.share, 'share', 'shares'],
     [t.convert, 'conversion', 'conversions'],
   ].filter(([n]) => Number.isFinite(n) && n > 0).map(([n, one, many]) => [n, n === 1 ? one : many]);
   if (!items.length) return;

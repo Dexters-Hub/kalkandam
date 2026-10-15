@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 
-const EVENTS = new Set(['visit', 'download', 'image', 'convert']);
+const EVENTS = new Set(['visit', 'download', 'image', 'share', 'convert']);
 const LIMIT_PER_MINUTE = 30;
 
 export class Stats extends DurableObject {
@@ -28,7 +28,7 @@ export class Stats extends DurableObject {
   }
 
   async totals() {
-    const out = { visit: 0, download: 0, image: 0, convert: 0 };
+    const out = { visit: 0, download: 0, image: 0, share: 0, convert: 0 };
     for (const row of this.sql.exec('SELECT name, n FROM counts')) out[row.name] = row.n;
     return out;
   }
