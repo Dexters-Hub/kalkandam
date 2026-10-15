@@ -470,8 +470,12 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .fact-label { flex: none; font-weight: 650; color: var(--accent); }
 .fact-text { display: inline; }
 @media (max-width: 559px) { .fact { flex-direction: column; min-height: 8.2em; } }
-.fact-src { color: var(--muted); font-size: .8rem; margin-left: 4px; }
-.fact-src:hover { color: var(--text); }
+.fact { position: relative; padding-right: 46px; }
+.fact-src {
+  position: absolute; top: 9px; right: 10px; display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; color: var(--muted); transition: color .2s, background .2s;
+}
+.fact-src:hover, .fact-src:focus-visible { color: var(--text); background: var(--surface); }
 .fact-body { display: block; min-width: 0; }
 .site-stats { margin: 12px 0 0; color: var(--muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
 .site-stats b { color: var(--text); font-weight: 650; }

@@ -122,6 +122,9 @@ export function initFacts(facts, motion, interval = 8000) {
     const fact = facts[order[i]];
     text.textContent = fact.text;
     src.href = fact.src;
+    const site = new URL(fact.src).hostname.replace(/^www\./, '');
+    src.title = `Source: ${site}`;
+    src.setAttribute('aria-label', `Source: ${site}`);
   };
   show();
   box.hidden = false;
