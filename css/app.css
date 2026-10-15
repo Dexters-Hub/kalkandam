@@ -499,3 +499,9 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .site-stats[hidden] { display: block !important; visibility: hidden; }
 html[data-view="convert"] #view-fonts, html[data-view="try"] #view-fonts { display: none !important; }
 html[data-view="convert"] #view-convert, html[data-view="try"] #view-try { display: block !important; }
+#presets:empty { min-height: 43px; }
+#themes:empty { min-height: 24px; min-width: 184px; }
+#collections:empty { min-height: 35px; min-width: 60%; }
+@media (pointer: coarse) { #collections:empty { min-height: 41px; } }
+#styles:empty { min-height: 33px; }
+#count:empty { min-height: 20px; }
