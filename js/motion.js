@@ -21,6 +21,8 @@ export function intro() {
 }
 
 export function countUp(el, value) {
+  el.style.display = 'inline-block';
+  el.style.minWidth = `${value.toLocaleString().length}ch`;
   if (!enabled) { el.textContent = value.toLocaleString(); return; }
   const obj = { n: 0 };
   gsap.to(obj, {
