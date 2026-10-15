@@ -70,6 +70,8 @@ npm test           # converter tests (Node 20+)
 
 No build step. Plain HTML, CSS and ES modules, with [GSAP](https://gsap.com) for animation.
 
+The footer counters (visits, downloads, images, conversions) come from a tiny Cloudflare Worker with a Durable Object. It stores totals only: no cookies, no IP addresses, no personal data.
+
 | Script | What it does |
 | --- | --- |
 | `npm start` | Serve the site on port 8000 |
@@ -105,6 +107,8 @@ js/malayalam.js         Unicode ⇄ ML / FML / Manglish conversion
 js/motion.js            GSAP animations, with a no-motion fallback
 js/common.js            theme toggle, GitHub stars, storage
 js/letters*.js          alphabet page and its data
+js/facts.js             sourced "Did you know?" facts for the footer
+worker/index.js         Cloudflare Worker: anonymous counters for the footer (/api/hit, /api/stats)
 data/fonts.json         generated font catalogue
 fonts/                  original font files, plus web/ preview copies
 scripts/build_fonts.py  catalogue builder

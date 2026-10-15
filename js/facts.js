@@ -1,0 +1,18 @@
+export const FACTS = [
+  { text: "Malayala Manorama's headlines are set in Aarcha and Kingini, typefaces made just for the paper in the 1990s.", src: 'https://luc.devroye.org/fonts-50017.html' },
+  { text: 'Malayala Manorama prints and publishes online using its own in-house fonts.', src: 'https://www.typotheque.com/articles/malayalam-scripting-tradition-and-modernity' },
+  { text: "Mathrubhumi's newspaper fonts, Mathrubhumi 760 and 762, were redesigned by type designer Hashim P M.", src: 'https://luc.devroye.org/fonts-50017.html' },
+  { text: 'The first printed Malayalam book, Samkshepavedartham, was printed in Rome in 1772.', src: 'https://en.wikipedia.org/wiki/Samkshepa_Vedartham' },
+  { text: 'The type for the first printed Malayalam book (Rome, 1772) needed 1,138 separate punches.', src: 'https://www.typotheque.com/articles/malayalam-scripting-tradition-and-modernity' },
+  { text: "Kerala's first printing press, the CMS Press in Kottayam, was set up by Benjamin Bailey in 1821.", src: 'https://en.wikipedia.org/wiki/Benjamin_Bailey_(missionary)' },
+  { text: "Benjamin Bailey's metal type, ready by 1829, gave Malayalam print the rounded letters it still uses.", src: 'https://www.typotheque.com/articles/malayalam-scripting-tradition-and-modernity' },
+  { text: 'In 1971, Malayalam typewriters had to fit about 500 letters onto just 92 keys.', src: 'https://www.typotheque.com/articles/malayalam-scripting-tradition-and-modernity' },
+  { text: "Kerala's simplified new script officially came into effect on 15 April 1971.", src: 'https://en.wikipedia.org/wiki/Malayalam_script' },
+  { text: 'In 2022, Kerala ordered a revised script that brought back some traditional letter forms.', src: 'https://onmanorama.com/news/kerala/2022/05/11/revised-malayalam-script-to-come-into-effect-soon.html' },
+  { text: 'Malayalam has been part of Unicode since its very first version, 1.0, released in 1991.', src: 'https://en.wikipedia.org/wiki/Malayalam_script' },
+  { text: 'Chillus like ൽ and ൻ got their own Unicode characters in version 5.1. Before that, they were built from a consonant and ്.', src: 'https://en.wikipedia.org/wiki/Malayalam_script' },
+  { text: 'Rachana, by K. H. Hussain, was the first Malayalam font built for the full traditional script. Work began in 1999.', src: 'https://github.com/smc/Rachana' },
+  { text: 'The free Meera font by K. H. Hussain was released on 21 September 2007.', src: 'https://smc.org.in/en/fonts/meera' },
+  { text: 'Manjari, by Santhosh Thottingal, was released in 2016, with OpenType engineering by Kavya Manohar.', src: 'https://smc.org.in/en/fonts/manjari' },
+  { text: 'Rajyasamacharam, edited by Hermann Gundert in 1847, was the first Malayalam journal published in Kerala.', src: 'https://en.wikipedia.org/wiki/Rajyasamacharam' },
+];

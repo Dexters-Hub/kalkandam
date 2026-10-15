@@ -1,11 +1,17 @@
 {
   "name": "kalkandam",
   "compatibility_date": "2026-10-01",
+  "main": "worker/index.js",
   "assets": {
     "directory": "./",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none"
   },
+  "durable_objects": {
+    "bindings": [{ "name": "STATS", "class_name": "Stats" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
   "routes": [
     { "pattern": "kalkandam.in", "custom_domain": true },
     { "pattern": "www.kalkandam.in", "custom_domain": true }
