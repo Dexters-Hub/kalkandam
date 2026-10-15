@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=6';
-import * as motion from './motion.js?v=6';
-import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=6';
-import { FACTS } from './facts.js?v=6';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=7';
+import * as motion from './motion.js?v=7';
+import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=7';
+import { FACTS } from './facts.js?v=7';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
