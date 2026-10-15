@@ -113,6 +113,18 @@ export function ripplePreviews(previews) {
   gsap.fromTo(onScreen, { y: 14, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.04, duration: 0.5, clearProps: 'transform,opacity' });
 }
 
+export function crossfade(el, update) {
+  if (!enabled) { update(); return; }
+  gsap.killTweensOf(el);
+  gsap.to(el, {
+    opacity: 0, y: -6, filter: 'blur(4px)', duration: 0.35, ease: 'power2.in',
+    onComplete: () => {
+      update();
+      gsap.fromTo(el, { opacity: 0, y: 6, filter: 'blur(4px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.5, ease: 'expo.out', clearProps: 'filter' });
+    },
+  });
+}
+
 export function spin(el) {
   if (!enabled || !el) return;
   gsap.fromTo(el, { rotate: -90, scale: 0.6, opacity: 0 }, { rotate: 0, scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(2)' });

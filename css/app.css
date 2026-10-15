@@ -466,11 +466,12 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .lt-word span { font-family: var(--letters-font, system-ui); color: var(--text); font-size: 1rem; }
 
 
-.fact { margin: 18px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--sunk); color: var(--text); font-size: .88rem; line-height: 1.5; }
-.fact-label { font-weight: 650; color: var(--accent); margin-right: 4px; }
-.fact-text { display: inline-block; }
+.fact { display: flex; align-items: baseline; gap: 4px 8px; margin: 18px 0 0; padding: 12px 14px; min-height: 3.2em; border-radius: 12px; background: var(--sunk); color: var(--text); font-size: .88rem; line-height: 1.5; }
+.fact-label { flex: none; font-weight: 650; color: var(--accent); }
+.fact-text { display: inline; }
+@media (max-width: 559px) { .fact { flex-direction: column; min-height: 8.2em; } }
 .fact-src { color: var(--muted); font-size: .8rem; margin-left: 4px; }
-.fact-next { margin-left: 6px; border: 0; background: none; padding: 0; color: var(--muted); font-size: .8rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.fact-next:hover, .fact-src:hover { color: var(--text); }
+.fact-src:hover { color: var(--text); }
+.fact-body { display: block; min-width: 0; }
 .site-stats { margin: 12px 0 0; color: var(--muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
 .site-stats b { color: var(--text); font-weight: 650; }
