@@ -1,0 +1,21 @@
+name: Something's broken
+description: A font that won't load, a wrong conversion, a layout problem
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead. Screenshots help.
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Page or font
+      placeholder: "kalkandam.in/#convert, or the font name"
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: "iPhone 15, Safari"

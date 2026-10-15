@@ -91,10 +91,12 @@
       <h2 id="contribute-h">Know something about a font?</h2>
       <p class="lt-intro">Who designed it, when, for which publication, or a story behind it. Send it in and it will be reviewed before it appears on the site. No account needed.</p>
       <form class="contrib-form" id="contrib-form" novalidate>
-        <label class="field"><span>Font</span>
-          <input id="cf-font" name="font" list="cf-fonts" required maxlength="80" autocomplete="off" placeholder="Start typing a font name">
-          <datalist id="cf-fonts"></datalist>
-        </label>
+        <div class="field combo">
+          <label for="cf-font">Font</label>
+          <input id="cf-font" name="font" required maxlength="80" autocomplete="off" placeholder="Start typing a font name"
+            role="combobox" aria-expanded="false" aria-controls="cf-fonts" aria-autocomplete="list">
+          <ul class="combo-list" id="cf-fonts" role="listbox" aria-label="Fonts" hidden></ul>
+        </div>
         <label class="field"><span>What do you know?</span>
           <select id="cf-kind" name="kind">
             <option value="designer">Who designed it</option>
