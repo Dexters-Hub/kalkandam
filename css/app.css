@@ -475,3 +475,19 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .fact-body { display: block; min-width: 0; }
 .site-stats { margin: 12px 0 0; color: var(--muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
 .site-stats b { color: var(--text); font-weight: 650; }
+
+.nf { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 40px; padding-bottom: 40px; }
+.nf-digits {
+  display: flex; justify-content: center; gap: .04em; height: 1.35em; overflow: hidden;
+  margin: 0; padding: 0; border: 0; background: none; color: var(--text); cursor: pointer;
+  font-size: clamp(6rem, 30vw, 13rem); line-height: 1.3;
+}
+.nf-digit { display: inline-block; min-width: .55em; will-change: transform, opacity; }
+.nf-digit:nth-child(2) { color: var(--accent); }
+.nf-note { margin: 4px 0 0; font-size: .95rem; font-weight: 600; }
+.nf-fonts { margin: 2px 0 0; height: 1.4em; color: var(--muted); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.nf-title { margin: 22px 0 6px; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 650; }
+.nf-lede { margin: 0; color: var(--muted); max-width: 42ch; }
+.nf-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 22px 0 6px; }
+.nf .fact { max-width: 720px; text-align: left; }
+.nf-page { padding-bottom: 0; }
