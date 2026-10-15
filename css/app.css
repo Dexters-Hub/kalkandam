@@ -486,8 +486,4 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .nf-digit:nth-child(2) { color: var(--accent); }
 .nf-note { margin: 4px 0 0; font-size: .95rem; font-weight: 600; }
 .nf-fonts { margin: 2px 0 0; height: 1.4em; color: var(--muted); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-.nf-title { margin: 22px 0 6px; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 650; }
-.nf-lede { margin: 0; color: var(--muted); max-width: 42ch; }
-.nf-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 22px 0 6px; }
-.nf .fact { max-width: 720px; text-align: left; }
-.nf-page { padding-bottom: 0; }
+.nf .fact { max-width: 720px; margin-top: 34px; text-align: left; }
