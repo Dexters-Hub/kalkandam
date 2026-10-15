@@ -38,6 +38,20 @@ createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end(JSON.stringify(counts));
     return;
   }
+  if (url.pathname === '/api/config') {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end('{"turnstile":null,"local":true}');
+    return;
+  }
+  if (url.pathname === '/api/contribute' && req.method === 'POST') {
+    let body = '';
+    for await (const chunk of req) body += chunk;
+    let data = {};
+    try { data = JSON.parse(body.slice(0, 8192)); } catch {}
+    const ok = Boolean(String(data.font || '').trim() && String(data.details || '').trim());
+    console.log('contribution (local preview, not sent):', ok ? `${data.font} / ${data.kind}` : 'invalid');
+    res.writeHead(ok ? 200 : 400, { 'Content-Type': 'application/json' }).end(JSON.stringify({ ok, local: true, error: ok ? undefined : 'missing' }));
+    return;
+  }
   const file = await resolveFile(url.pathname === '/' ? '/index.html' : url.pathname);
   if (!file) {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });

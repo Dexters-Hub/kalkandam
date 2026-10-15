@@ -1,0 +1,43 @@
+name: Font info
+description: Share who designed a font, when it was made, or a story behind it
+title: "Font info: "
+labels: ["font-info"]
+body:
+  - type: input
+    id: font
+    attributes:
+      label: Font
+      description: The font name as shown on kalkandam.in
+      placeholder: "Karthika (ML-TT)"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you know?
+      options:
+        - Who designed it
+        - When it was made
+        - Foundry or publisher
+        - Its licence or terms of use
+        - A story or history
+        - A correction
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      placeholder: "For example: designed by … for Malayala Manorama in 1998"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source link (optional)
+      placeholder: "https://"
+  - type: input
+    id: credit
+    attributes:
+      label: Name to credit you as (optional)

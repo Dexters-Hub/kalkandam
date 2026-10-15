@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=13';
-import * as motion from './motion.js?v=13';
-import { store, REPO, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=13';
-import { FACTS } from './facts.js?v=13';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=14';
+import * as motion from './motion.js?v=14';
+import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=14';
+import { FACTS } from './facts.js?v=14';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -128,6 +128,22 @@ function styleMatches(font, filter) {
   }
 }
 
+// Only OFL and GPL with the font exception are clearly fine for commercial work. Legacy DTP fonts ship without terms.
+function licenceStatus(font) {
+  const id = font.license || '';
+  if (/OFL|Font-exception/.test(id)) {
+    return { kind: 'free', tag: '✓ Commercial use', note: `Free for personal and commercial use (${id}).` };
+  }
+  if (id) {
+    return { kind: 'check', tag: 'Check licence', note: `${id}. Read the licence before commercial use.` };
+  }
+  if (font.rights === 'free') {
+    return { kind: 'marked', tag: 'Marked free', note: 'Its maker marked it free, but not whether commercial use is allowed.' };
+  }
+  const who = font.owner || 'its maker';
+  return { kind: 'unknown', tag: 'Licence unknown', note: `No licence published. Ask ${who} before commercial use.` };
+}
+
 function styleLabel(font) {
   return font.label || font.style.replace(/^Normal$/i, 'Regular');
 }
@@ -173,7 +189,7 @@ function buildCard(group, { own = false } = {}) {
         <h3></h3>
         <div class="sub"></div>
       </div>
-      <p class="badge"></p>
+      <div class="tags"><p class="badge"></p><p class="lic"></p></div>
     </div>
     <p class="preview" role="button" tabindex="0"></p>
     <div class="card-styles"></div>
@@ -187,6 +203,13 @@ function buildCard(group, { own = false } = {}) {
   const designer = (group.styles[0].designer || '').replace(/[\s,;.]+$/, '');
   $('.sub', card).textContent = `${styleCount} style${styleCount > 1 ? 's' : ''}${designer ? ` · ${designer}` : ''}`;
   $('.badge', card).textContent = group.collection;
+  const lic = licenceStatus(group.styles[0]);
+  if (own) $('.lic', card).remove();
+  else {
+    $('.lic', card).className = `lic ${lic.kind}`;
+    $('.lic', card).textContent = lic.tag;
+    $('.lic', card).title = lic.note;
+  }
 
   const styles = $('.card-styles', card);
   if (styleCount > 1) {
@@ -303,7 +326,43 @@ function renderControls() {
     syncToggle();
     sample.focus();
   });
-  sample.addEventListener('input', () => {
+  const suggestBox = $('#suggest');
+  let suggester = null;
+  let suggesterLoad = null;
+  const loadSuggester = () => {
+    suggesterLoad ||= Promise.all([
+      import('./suggest.js?v=14'),
+      fetch('./data/words/ml-words.txt').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }),
+    ]).then(([mod, text]) => { suggester = mod.createSuggester(text, store.get('picks', {})); })
+      .catch((err) => { suggesterLoad = null; console.error(err); });
+    return suggesterLoad;
+  };
+  // The Latin word under the caret, as [start, end].
+  const wordAtCaret = () => {
+    const v = sample.value;
+    const caret = sample.selectionEnd;
+    let start = caret;
+    let end = caret;
+    while (start > 0 && /[A-Za-z~]/.test(v[start - 1])) start--;
+    while (end < v.length && /[A-Za-z~]/.test(v[end])) end++;
+    return [start, end];
+  };
+  const updateSuggestions = () => {
+    if (!state.manglish) { suggestBox.hidden = true; return; }
+    if (!suggester) { loadSuggester().then(() => suggester && updateSuggestions()); return; }
+    const [start, end] = wordAtCaret();
+    const word = sample.value.slice(start, end).replace(/~/g, '');
+    const words = word.length >= 2 ? suggester.suggest(word, 5) : [];
+    suggestBox.replaceChildren(...words.map((w) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = w;
+      b.dataset.word = w;
+      return b;
+    }));
+    suggestBox.hidden = !words.length;
+  };
+  const onSampleInput = () => {
     if (state.manglish) {
       state.manglishRaw = sample.value;
       store.set('manglishRaw', state.manglishRaw);
@@ -311,7 +370,36 @@ function renderControls() {
     } else {
       setText(sample.value);
     }
+  };
+  // Keep the keyboard open when a chip is tapped.
+  suggestBox.addEventListener('pointerdown', (e) => { if (e.target.closest('button')) e.preventDefault(); });
+  suggestBox.addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const [start, end] = wordAtCaret();
+    const latin = sample.value.slice(start, end).replace(/~/g, '');
+    const tail = sample.value.slice(end);
+    const gap = tail.startsWith(' ') ? '' : ' ';
+    sample.value = sample.value.slice(0, start) + b.dataset.word + gap + tail;
+    const caret = start + b.dataset.word.length + 1;
+    sample.setSelectionRange(caret, caret);
+    sample.focus();
+    if (latin && suggester) {
+      const picks = suggester.learn(latin, b.dataset.word);
+      const keys = Object.keys(picks);
+      if (keys.length > 500) for (const k of keys.slice(0, keys.length - 500)) delete picks[k];
+      store.set('picks', picks);
+    }
+    onSampleInput();
+    suggestBox.hidden = true;
   });
+  sample.addEventListener('input', () => {
+    onSampleInput();
+    updateSuggestions();
+  });
+  sample.addEventListener('click', updateSuggestions);
+  sample.addEventListener('keyup', (e) => { if (e.key.startsWith('Arrow')) updateSuggestions(); });
+  toggle.addEventListener('click', updateSuggestions);
   syncToggle();
 
   const size = $('#size');
@@ -605,16 +693,94 @@ function renderSheet() {
   $$('#sheet-styles button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === font.id)));
   const kb = font.bytes ? `${Math.round(font.bytes / 1024)} KB` : '';
   const designer = (font.designer || '').replace(/[\s,;.]+$/, '');
-  $('#sheet-meta').textContent = [styleLabel(font), designer, font.license, kb].filter(Boolean).join(' · ');
+  renderSheetMeta(font, designer, kb);
+  loadFontInfo().then((info) => {
+    if (sheetCard && sheetCard._font === font) renderSheetInfo(font, designer, kb, info.fonts[`${font.family} (${font.collection})`]);
+  });
   const dl = $('#dl-font');
   dl.hidden = Boolean(local);
   if (!local) {
     dl.href = downloadUrl(font);
     dl.setAttribute('download', font.file.split('/').pop());
   }
+  const lic = licenceStatus(font);
+  const licBox = $('#sheet-lic');
+  licBox.hidden = Boolean(local);
+  $('.lic', licBox).className = `lic ${lic.kind}`;
+  $('.lic', licBox).textContent = lic.tag;
+  $('#sheet-lic-note').textContent = lic.note;
+  const notice = $('#sheet-lic-more');
+  notice.hidden = !font.copyright;
+  $('span', notice).textContent = font.copyright || '';
+  const credit = $('#sheet-credit');
+  const kind = lic.kind === 'unknown' ? 'licence' : designer ? 'correction' : 'designer';
+  credit.href = `/about?font=${encodeURIComponent(`${font.family} (${font.collection})`)}&kind=${kind}#contribute`;
+  credit.textContent = lic.kind === 'unknown'
+    ? 'Know who made it or its licence? Tell us'
+    : designer ? 'Know more about this font? Tell us' : 'Know who designed this font? Tell us';
   $('#sheet-note').textContent = g.encoding === 'unicode'
     ? 'Unicode font. Install it and type normally, or use it in Canva, CapCut, Photoshop.'
     : `Legacy ${g.encoding === 'fml' ? 'FML' : 'ML'} font. “Copy text” gives you the encoded text to paste into PageMaker / Photoshop with this font selected.`;
+}
+
+function renderSheetMeta(font, designer, kb, linked = font.collection === 'Unicode') {
+  const meta = $('#sheet-meta');
+  const parts = [styleLabel(font)];
+  if (designer) {
+    const names = linked ? designerNames(designer) : [];
+    if (names.length) {
+      const span = document.createElement('span');
+      names.forEach((n, i) => {
+        const a = document.createElement('a');
+        a.href = `/about#${personSlug(n)}`;
+        a.textContent = n;
+        span.append(...(i ? [', ', a] : [a]));
+      });
+      parts.push(span);
+    } else parts.push(designer);
+  }
+  for (const p of [font.license, kb]) if (p) parts.push(p);
+  meta.replaceChildren(...parts.flatMap((p, i) => (i ? [' · ', p] : [p])));
+}
+
+// Reviewed community notes from data/font-info.json.
+function renderSheetInfo(font, designer, kb, entry) {
+  const box = $('#sheet-info');
+  box.hidden = !entry;
+  if (!entry) return;
+  if (entry.designer) renderSheetMeta(font, entry.designer, kb, true);
+  const body = $('div', box);
+  body.replaceChildren();
+  const row = (label, value) => {
+    if (!value) return;
+    const p = document.createElement('p');
+    const b = document.createElement('b');
+    b.textContent = `${label}: `;
+    p.append(b, value);
+    body.append(p);
+  };
+  row('Designed by', entry.designer);
+  row('Year', entry.year);
+  row('Foundry', entry.foundry);
+  if (entry.story) {
+    const p = document.createElement('p');
+    p.textContent = entry.story;
+    body.append(p);
+  }
+  if (entry.source && /^https?:\/\//.test(entry.source)) {
+    const a = document.createElement('a');
+    a.href = entry.source;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = 'Source';
+    body.append(a);
+  }
+  if (entry.addedBy?.length) {
+    const p = document.createElement('p');
+    p.className = 'sheet-info-by';
+    p.textContent = `Shared by ${entry.addedBy.join(', ')}`;
+    body.append(p);
+  }
 }
 
 function sheetExportOpts(transparent) {

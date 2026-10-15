@@ -12,6 +12,8 @@
     "bindings": [{ "name": "STATS", "class_name": "Stats" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
+  // Public Turnstile site key. GITHUB_TOKEN and TURNSTILE_SECRET are Worker secrets, never in this file.
+  "vars": { "TURNSTILE_SITEKEY": "0x4AAAAAAFXbnrwQuXPLGJGr" },
   "routes": [
     { "pattern": "kalkandam.in", "custom_domain": true },
     { "pattern": "www.kalkandam.in", "custom_domain": true }

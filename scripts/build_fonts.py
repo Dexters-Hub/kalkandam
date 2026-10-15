@@ -77,12 +77,36 @@ def read_sources():
             continue
         folder = cells[1].strip("`/")
         spdx = re.search(r"`([^`]+)`", cells[3])
+        who = cells[4].split(" / ")
+        url = re.search(r"https?://[^\s)]+", cells[5]) if len(cells) > 5 else None
         sources[folder] = {
             "family": cells[0],
             "license": spdx.group(1) if spdx else cells[3],
-            "designer": cells[4].split(" / ")[0],
+            "designer": who[0].strip(),
+            "foundry": who[1].strip() if len(who) > 1 else "",
+            "source": url.group(0) if url else "",
         }
     return sources
+
+
+def legacy_rights(font):
+    """Copyright holder and any licence stated inside a legacy font file."""
+    notice = re.sub(r"\s+", " ", name(font, 0))
+    licence = name(font, 13, 14)
+    out = {}
+    if "Open Font License" in licence or "OFL" in licence:
+        out["license"] = "OFL-1.1"
+    if notice.upper() == "FREE":
+        out["rights"] = "free"
+    elif notice:
+        out["copyright"] = notice[:140]
+        if re.search(r"C-?\s?DAC", notice, re.I):
+            out["owner"] = "C-DAC"
+        else:
+            m = re.search(r"(?:\(c\)|©)\s*(?:\d{4}(?:-\d+)?,?\s*)?(?:by\s+)?([^.,\d][^.,]*?)(?:,|\.|\s+\d{4}|$)", notice, re.I)
+            if m and m.group(1).strip().lower() not in ("all rights reserved",):
+                out["owner"] = m.group(1).strip()[:60]
+    return out
 
 
 def legacy_mapping(font):
@@ -174,6 +198,12 @@ def main():
             }
             if source:
                 entry["license"] = source["license"]
+                if source["foundry"]:
+                    entry["foundry"] = source["foundry"]
+                if source["source"]:
+                    entry["source"] = source["source"]
+            elif collection != "Unicode":
+                entry.update(legacy_rights(font))
             designer = source["designer"] if source else name(font, 9, 8)
             if designer:
                 entry["designer"] = designer[:80]
