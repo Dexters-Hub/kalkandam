@@ -66,7 +66,7 @@ async function main() {
   }, motion.enabled ? 1100 : 2500);
 
   if (motion.enabled) {
-    gsap.from('.nf-title, .nf-lede, .nf-actions', { y: 16, opacity: 0, stagger: 0.08, duration: 0.6, ease: 'power3.out', delay: 0.15 });
+    gsap.from('.nf .fact', { y: 16, opacity: 0, stagger: 0.08, duration: 0.6, ease: 'power3.out', delay: 0.15 });
   }
 }
 
