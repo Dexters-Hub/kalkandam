@@ -1,11 +1,11 @@
-import { toManglish } from './malayalam.js?v=14';
-import * as motion from './motion.js?v=14';
-import { store, initThemeToggle, initStars, trackVisit, initSiteStats, initFacts } from './common.js?v=14';
-import { FACTS } from './facts.js?v=14';
-import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=14';
+import { toManglish } from './malayalam.js?v=15';
+import * as motion from './motion.js?v=15';
+import { store, initThemeToggle, initStars, trackVisit, initSiteStats, initFacts } from './common.js?v=15';
+import { FACTS } from './facts.js?v=15';
+import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=15';
 
 const $ = (sel, root = document) => root.querySelector(sel);
-const FONT_VERSION = 2;
+const FONT_VERSION = 3;
 const DEFAULT_FONT = 'unicode-manjari-regular';
 
 let mlVoice = null;

@@ -84,6 +84,7 @@ The footer counters (visits, downloads, images, conversions) come from a tiny Cl
 | `npm start` | Serve the site on port 8000 |
 | `npm test` | Run the converter tests |
 | `npm run build:fonts` | Rebuild `data/fonts.json` and `fonts/web/*.woff` (needs `pip install fonttools`) |
+| `python3 scripts/check_upstream.py` | Check the open Unicode fonts against their latest upstream releases (also runs monthly as a GitHub Action) |
 | `npm run vendor:gsap` | Copy GSAP from `node_modules` into `vendor/gsap/` after an upgrade |
 
 ## Add a font
@@ -101,7 +102,7 @@ The footer counters (visits, downloads, images, conversions) come from a tiny Cl
 2. Run `npm run build:fonts`.
 3. Open a pull request.
 
-The build reads names and styles from the font files and makes compressed WOFF copies for previews. Originals are never modified; they're what people download. Know a font that should be here? [Open an issue](https://github.com/Dexters-Hub/kalkandam/issues/new).
+The build reads names and styles from the font files and makes compressed WOFF copies for previews. Originals are never modified. Openly licensed Unicode fonts download straight from their makers (SMC, Rachana Institute, Noto, Google Fonts) so people always get the latest release; the copies here are only for previews. Legacy DTP fonts download from this repo. Know a font that should be here? [Open an issue](https://github.com/Dexters-Hub/kalkandam/issues/new).
 
 ## Project layout
 

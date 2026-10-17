@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=14';
-import * as motion from './motion.js?v=14';
-import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=14';
-import { FACTS } from './facts.js?v=14';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=15';
+import * as motion from './motion.js?v=15';
+import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=15';
+import { FACTS } from './facts.js?v=15';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -48,6 +48,28 @@ const state = {
 
 const DOWNLOAD_BASE = `https://raw.githubusercontent.com/${REPO}/main/`;
 const downloadUrl = (font) => DOWNLOAD_BASE + font.file.split('/').map(encodeURIComponent).join('/');
+// Open fonts download from their makers, so people always get the latest release.
+const UPSTREAMS = [
+  ['smc.org.in', 'SMC'], ['gitlab.com/rit-fonts', 'Rachana Institute'], ['notofonts.github.io', 'Noto'],
+  ['fonts.google.com', 'Google Fonts'], ['fedoraproject.org', 'Fedora'],
+];
+const upstreamName = (font) => (UPSTREAMS.find(([host]) => font.download?.includes(host)) || [, 'its maker'])[1];
+function setDownloadLink(a, font, short) {
+  if (font.download) {
+    a.href = font.download;
+    a.removeAttribute('download');
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = short ? 'Font ↗' : `Get latest from ${upstreamName(font)} ↗`;
+    a.title = `Download the latest version from ${upstreamName(font)}`;
+  } else {
+    a.href = downloadUrl(font);
+    a.setAttribute('download', font.file.split('/').pop());
+    a.removeAttribute('target');
+    a.textContent = short ? 'Font ↓' : 'Download font';
+    a.removeAttribute('title');
+  }
+}
 
 let FAMILIES = [];
 let BY_ID = new Map();
@@ -70,7 +92,7 @@ function hue(str) {
   return h % 360;
 }
 
-const FONT_VERSION = 2;
+const FONT_VERSION = 3;
 const fontLoads = new Map();
 const loadedFonts = new Set();
 const nearViewport = (el, margin = window.innerHeight) => {
@@ -239,10 +261,7 @@ function setCardFont(card, font, { lazy = false } = {}) {
   const family = `"${cssFamily(font)}", system-ui`;
   for (const b of $$('.card-styles button', card)) b.setAttribute('aria-pressed', String(b.dataset.id === font.id));
   const dl = $('[data-act="font"]', card);
-  if (dl) {
-    dl.href = downloadUrl(font);
-    dl.setAttribute('download', font.file.split('/').pop());
-  }
+  if (dl) setDownloadLink(dl, font, true);
   if (!card.classList.contains('ready') || loadedFonts.has(font.id)) {
     preview.style.fontFamily = family;
     return;
@@ -331,7 +350,7 @@ function renderControls() {
   let suggesterLoad = null;
   const loadSuggester = () => {
     suggesterLoad ||= Promise.all([
-      import('./suggest.js?v=14'),
+      import('./suggest.js?v=15'),
       fetch('./data/words/ml-words.txt').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }),
     ]).then(([mod, text]) => { suggester = mod.createSuggester(text, store.get('picks', {})); })
       .catch((err) => { suggesterLoad = null; console.error(err); });
@@ -571,7 +590,7 @@ async function downloadFamily(g, button) {
   const fonts = g.styles.filter((f) => f.file);
   const folder = `${g.family} (${g.collection})`.replace(/[\\/:*?"<>|]+/g, '-');
   try {
-    const { makeZip } = await import('./zip.js?v=14');
+    const { makeZip } = await import('./zip.js?v=15');
     const files = [];
     let done = 0;
     button.textContent = `Preparing 0/${fonts.length}…`;
@@ -737,7 +756,7 @@ function renderSheet() {
   }
 
   $$('#sheet-styles button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === font.id)));
-  const kb = font.bytes ? `${Math.round(font.bytes / 1024)} KB` : '';
+  const kb = font.bytes && !font.download ? `${Math.round(font.bytes / 1024)} KB` : '';
   const designer = (font.designer || '').replace(/[\s,;.]+$/, '');
   renderSheetMeta(font, designer, kb);
   loadFontInfo().then((info) => {
@@ -745,12 +764,10 @@ function renderSheet() {
   });
   const dl = $('#dl-font');
   dl.hidden = Boolean(local);
-  if (!local) {
-    dl.href = downloadUrl(font);
-    dl.setAttribute('download', font.file.split('/').pop());
-  }
+  if (!local) setDownloadLink(dl, font, false);
   const zipBtn = $('#dl-family');
-  zipBtn.hidden = Boolean(local) || g.styles.length < 2;
+  // Upstream downloads already cover the whole family.
+  zipBtn.hidden = Boolean(local) || g.styles.length < 2 || Boolean(font.download);
   if (!zipBtn.disabled) zipBtn.textContent = `All ${g.styles.length} styles (.zip)`;
   const lic = licenceStatus(font);
   const licBox = $('#sheet-lic');
@@ -768,7 +785,7 @@ function renderSheet() {
     ? 'Know who made it or its licence? Tell us'
     : designer ? 'Know more about this font? Tell us' : 'Know who designed this font? Tell us';
   $('#sheet-note').textContent = g.encoding === 'unicode'
-    ? 'Unicode font. Install it and type normally, or use it in Canva, CapCut, Photoshop.'
+    ? `Unicode font. Install it and type normally, or use it in Canva, CapCut, Photoshop.${font.download ? ` The download comes straight from ${upstreamName(font)}, so you get the latest version.` : ''}`
     : `Legacy ${g.encoding === 'fml' ? 'FML' : 'ML'} font. “Copy text” gives you the encoded text to paste into PageMaker / Photoshop with this font selected.`;
 }
 
