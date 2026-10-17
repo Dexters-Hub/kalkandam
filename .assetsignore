@@ -18,3 +18,9 @@ fonts/mlu
 fonts/unicode
 LICENSE
 worker
+.dev.vars*
+.env*
+.wrangler
+.DS_Store
+__pycache__
+.editorconfig

@@ -307,7 +307,19 @@ function matchFrom(table, s, i) {
   return null;
 }
 
-export function fromManglish(text) {
+// Capitals only mean something for T D N L R S and the long vowels A E I O U (Mozhi style).
+// Phones capitalise the first letter of a word, and all-caps is never intentional, so undo both.
+const MEANINGFUL_CAPS = 'TDNLRSAEIOU';
+export function manglishCase(text) {
+  return text.replace(/[A-Za-z]+/g, (word) => {
+    if (word.length > 1 && word === word.toUpperCase()) return word.toLowerCase();
+    if (/^[A-Z][a-z~]*$/.test(word)) word = word[0].toLowerCase() + word.slice(1);
+    return word.replace(/[A-Z]/g, (c) => (MEANINGFUL_CAPS.includes(c) ? c : c.toLowerCase()));
+  });
+}
+
+export function fromManglish(input) {
+  const text = manglishCase(input);
   let out = '';
   let i = 0;
   while (i < text.length) {

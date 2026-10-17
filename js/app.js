@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=15';
-import * as motion from './motion.js?v=15';
-import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=15';
-import { FACTS } from './facts.js?v=15';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=16';
+import * as motion from './motion.js?v=16';
+import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=16';
+import { FACTS } from './facts.js?v=16';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -35,12 +35,22 @@ const THEMES = [
 ];
 const themeColors = (t) => (t.png ? { fg: t.png[0], bg: t.png[1] } : { fg: t.fg, bg: t.bg });
 
+// The preview swatch used to share the 'theme' key with the site's light/dark setting; move it out.
+function previewTheme() {
+  const old = store.get('theme', null);
+  if (Number.isInteger(old)) {
+    store.set('previewTheme', old);
+    try { localStorage.removeItem('kalkandam:theme'); } catch {}
+  }
+  return store.get('previewTheme', 0);
+}
+
 const state = {
   text: store.get('text', PRESETS[0]),
   manglish: store.get('manglish', false),
   manglishRaw: store.get('manglishRaw', ''),
   size: store.get('size', 34),
-  theme: store.get('theme', 0),
+  theme: previewTheme(),
   collection: 'All',
   style: 'All',
   query: '',
@@ -306,7 +316,7 @@ function renderControls() {
     b.setAttribute('aria-label', t.name);
     b.title = t.name;
     b.style.background = t.sw;
-    b.addEventListener('click', () => { state.theme = i; store.set('theme', i); applyTheme(); });
+    b.addEventListener('click', () => { state.theme = i; store.set('previewTheme', i); applyTheme(); });
     themes.append(b);
   });
 
@@ -350,7 +360,7 @@ function renderControls() {
   let suggesterLoad = null;
   const loadSuggester = () => {
     suggesterLoad ||= Promise.all([
-      import('./suggest.js?v=15'),
+      import('./suggest.js?v=16'),
       fetch('./data/words/ml-words.txt').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }),
     ]).then(([mod, text]) => { suggester = mod.createSuggester(text, store.get('picks', {})); })
       .catch((err) => { suggesterLoad = null; console.error(err); });
@@ -480,6 +490,7 @@ function setText(text, { fromPreset = false } = {}) {
     store.set('manglish', false);
     $('#manglish-toggle').setAttribute('aria-pressed', 'false');
     $('#manglish-hint').hidden = true;
+    $('#suggest').hidden = true;
     $('#sample').value = text;
   }
   clearTimeout(textTimer);
@@ -555,7 +566,7 @@ function onCardClick(e) {
     const button = e.target.closest('[data-act]');
     exportPng(card._font, card._group.encoding, state.text, {
       size: state.size * 2, ...themeColors(THEMES[state.theme]), align: 'center',
-    }).then((file) => { downloadBlob(file); motion.confirm(button, 'Saved ✓'); });
+    }).then((file) => { downloadBlob(file); motion.confirm(button, 'Saved ✓'); }).catch(pngFailed);
   } else if (act === 'font') track('download');
   else if (act === 'remove') card.remove();
 }
@@ -586,11 +597,11 @@ async function copyForFont(encoding, text, button) {
 async function downloadFamily(g, button) {
   if (button.disabled) return;
   button.disabled = true;
-  const label = button.textContent;
+  let finished = false;
   const fonts = g.styles.filter((f) => f.file);
   const folder = `${g.family} (${g.collection})`.replace(/[\\/:*?"<>|]+/g, '-');
   try {
-    const { makeZip } = await import('./zip.js?v=15');
+    const { makeZip } = await import('./zip.js?v=16');
     const files = [];
     let done = 0;
     button.textContent = `Preparing 0/${fonts.length}…`;
@@ -598,7 +609,8 @@ async function downloadFamily(g, button) {
       const res = await fetch(downloadUrl(font));
       if (!res.ok) throw new Error(`${res.status} ${font.file}`);
       files.push({ name: `${folder}/${font.file.split('/').pop()}`, data: new Uint8Array(await res.arrayBuffer()) });
-      button.textContent = `Preparing ${++done}/${fonts.length}…`;
+      done += 1;
+      if (!finished) button.textContent = `Preparing ${done}/${fonts.length}…`;
     }));
     files.sort((a, b) => a.name.localeCompare(b.name));
     const lic = licenceStatus(g.styles[0]);
@@ -624,9 +636,17 @@ async function downloadFamily(g, button) {
     console.error(err);
     toast('Download failed. Please try again.');
   } finally {
+    finished = true;
     button.disabled = false;
-    button.textContent = label;
+    // The sheet may have switched to another family meanwhile.
+    const current = sheetCard?._group;
+    if (current) button.textContent = `All ${current.styles.length} styles (.zip)`;
   }
+}
+
+function pngFailed(err) {
+  console.error(err);
+  toast('Could not make the image. Try shorter text or a smaller size.');
 }
 
 function downloadBlob({ blob, name }) {
@@ -683,6 +703,8 @@ async function exportPng(font, encoding, text, { size, fg, bg, align = 'center',
   lines.forEach((l, i) => ctx.fillText(l, x, pad + lineH * i + lineH / 2));
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+  // Browsers return null when the canvas is too big for them (iOS caps canvas area).
+  if (!blob) throw new Error('canvas too large');
   const slug = (font.family || 'font').toLowerCase().replace(/[^a-z0-9]+/g, '-');
   return { blob, name: `kalkandam-${slug}${transparent ? '-transparent' : ''}.png` };
 }
@@ -870,11 +892,11 @@ function initSheet() {
     if (!state.manglish) $('#sample').value = e.target.value;
     renderSheet();
   });
-  $('#dl-png').addEventListener('click', async () => {
-    downloadBlob(await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false)));
+  $('#dl-png').addEventListener('click', () => {
+    exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false)).then(downloadBlob, pngFailed);
   });
-  $('#dl-transparent').addEventListener('click', async () => {
-    downloadBlob(await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(true)));
+  $('#dl-transparent').addEventListener('click', () => {
+    exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(true)).then(downloadBlob, pngFailed);
   });
   $('#dl-font').addEventListener('click', () => track('download'));
   $('#dl-family').addEventListener('click', (e) => downloadFamily(sheetCard._group, e.currentTarget));
@@ -885,7 +907,14 @@ function initSheet() {
   if (navigator.canShare?.({ files: [probe] })) {
     share.hidden = false;
     share.addEventListener('click', async () => {
-      const { blob, name } = await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false));
+      let file;
+      try {
+        file = await exportPng(sheetCard._font, sheetCard._group.encoding, $('#sheet-text').value, sheetExportOpts(false));
+      } catch (err) {
+        pngFailed(err);
+        return;
+      }
+      const { blob, name } = file;
       try {
         await navigator.share({ files: [new File([blob], name, { type: 'image/png' })], title: 'Kalkandam' });
         track('share');

@@ -44,8 +44,9 @@ export function heroCycler({ el, label, pick, render, interval = 2400 }) {
       if (!choice) return;
       const swap = () => {
         render(choice);
-        label.innerHTML = `set in <b></b> · ${choice.collection}`;
-        label.querySelector('b').textContent = choice.family;
+        const b = document.createElement('b');
+        b.textContent = choice.family;
+        label.replaceChildren('set in ', b, ` · ${choice.collection}`);
       };
       if (!enabled) { swap(); return; }
       await gsap.to(el, { yPercent: -40, opacity: 0, filter: 'blur(6px)', duration: 0.35, ease: 'power2.in' });
@@ -60,7 +61,8 @@ export function heroCycler({ el, label, pick, render, interval = 2400 }) {
   }
 
   new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }).observe(el);
-  timer = setInterval(next, interval);
+  // With reduced motion, show one random font and leave it there.
+  if (!reduced) timer = setInterval(next, interval);
   setTimeout(next, enabled ? 1400 : 0);
   return () => clearInterval(timer);
 }

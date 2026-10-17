@@ -1,8 +1,8 @@
-import { toManglish } from './malayalam.js?v=15';
-import * as motion from './motion.js?v=15';
-import { store, initThemeToggle, initStars, trackVisit, initSiteStats, initFacts } from './common.js?v=15';
-import { FACTS } from './facts.js?v=15';
-import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=15';
+import { toManglish } from './malayalam.js?v=16';
+import * as motion from './motion.js?v=16';
+import { store, initThemeToggle, initStars, trackVisit, initSiteStats, initFacts } from './common.js?v=16';
+import { FACTS } from './facts.js?v=16';
+import { VOWELS, CONSONANT_GROUPS, CHILLUS, SIGNS, CONJUNCTS, DIGITS } from './letters-data.js?v=16';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const FONT_VERSION = 3;

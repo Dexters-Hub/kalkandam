@@ -75,4 +75,9 @@ test('Manglish', () => {
   assert.equal(fromManglish('aarmaadam'), 'ആർമാദം');
   assert.equal(fromManglish('karmam'), 'കർമം');
   assert.equal(fromManglish('aarya'), 'ആര്യ');
+  assert.equal(fromManglish('Kerala'), fromManglish('kerala'));
+  assert.equal(fromManglish('Malayalam'), 'മലയലം');
+  assert.equal(fromManglish('MALAYALAM'), 'മലയലം');
+  assert.equal(fromManglish('kEraLam'), 'കേരളം');
+  assert.equal(fromManglish('ente KeraLam'), 'എന്റെ കെരളം');
 });

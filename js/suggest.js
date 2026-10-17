@@ -1,7 +1,7 @@
 // Manglish word suggestions: spell a loosely typed word every plausible way, rank the spellings with a
 // letter model trained on the word list, and prefer real words from that list.
 
-import { fromManglish } from './malayalam.js?v=15';
+import { fromManglish, manglishCase } from './malayalam.js?v=16';
 
 const V = '്';
 const CHILLU = { 'ന': 'ൻ', 'ണ': 'ൺ', 'ര': 'ർ', 'ല': 'ൽ', 'ള': 'ൾ' };
@@ -37,7 +37,6 @@ const match = (table, s, i) => table.find((row) => s.startsWith(row[0], i));
 function lattice(word) {
   const slots = [];
   let i = 0;
-  let afterConsonant = false;
   while (i < word.length) {
     const cons = match(CONS, word, i);
     if (cons) {
@@ -60,14 +59,13 @@ function lattice(word) {
         }
       }
       slots.push([...new Set(options)]);
-      afterConsonant = true;
       continue;
     }
     const vowel = match(VOWELS, word, i);
     if (vowel) {
       i += vowel[0].length;
-      slots.push(afterConsonant ? vowel[1].concat(vowel[2].filter(Boolean)) : vowel[1]);
-      afterConsonant = false;
+      // A vowel that doesn't follow a consonant is always written as an independent letter.
+      slots.push(vowel[1]);
       continue;
     }
     return null;
@@ -155,14 +153,17 @@ export function createSuggester(text, learned = {}) {
   return {
     has: (word) => freq.has(word),
     learn(latin, word) {
-      picks[latin.toLowerCase()] = word;
+      const key = manglishCase(latin);
+      delete picks[key]; // re-insert so the oldest picks are the ones dropped
+      picks[key] = word;
       return picks;
     },
-    suggest(latin, limit = 5) {
-      if (!/^[A-Za-z]+$/.test(latin)) return [];
+    suggest(input, limit = 5) {
+      if (!/^[A-Za-z]+$/.test(input)) return [];
+      const latin = manglishCase(input);
       const out = [];
       const push = (w) => { if (w && !out.includes(w)) out.push(w); };
-      push(picks[latin.toLowerCase()]);
+      push(picks[latin]);
       const ranked = spellings(latin);
       const known = ranked
         .filter((r) => freq.has(r.s))
