@@ -1,7 +1,7 @@
 // Manglish word suggestions: spell a loosely typed word every plausible way, rank the spellings with a
 // letter model trained on the word list, and prefer real words from that list.
 
-import { fromManglish } from './malayalam.js?v=14';
+import { fromManglish } from './malayalam.js?v=15';
 
 const V = '്';
 const CHILLU = { 'ന': 'ൻ', 'ണ': 'ൺ', 'ര': 'ർ', 'ല': 'ൽ', 'ള': 'ൾ' };

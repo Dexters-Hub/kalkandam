@@ -1,6 +1,6 @@
-import * as motion from './motion.js?v=14';
-import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=14';
-import { FACTS } from './facts.js?v=14';
+import * as motion from './motion.js?v=15';
+import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=15';
+import { FACTS } from './facts.js?v=15';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const KINDS = { designer: 'Designer', year: 'Year', foundry: 'Foundry / publisher', licence: 'Licence', story: 'Story', correction: 'Correction', other: 'Other' };
@@ -15,7 +15,7 @@ function el(tag, attrs = {}, ...children) {
   return node;
 }
 
-const FONT_VERSION = 2;
+const FONT_VERSION = 3;
 const SAMPLE = 'കൽക്കണ്ടം';
 
 function pickStyle(styles) {

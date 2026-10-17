@@ -66,6 +66,27 @@ FAMILY_ALIASES = {
 }
 
 
+# SMC fonts that are also mirrored on Google Fonts: SMC's own zips are the upstream.
+SMC_ZIPS = {"Chilanka": "chilanka", "Gayathri": "gayathri", "Manjari": "manjari"}
+
+
+def latest_download(family, source):
+    """Where to get the current release of an open font, so we never hand out stale copies."""
+    if family in SMC_ZIPS:
+        n = SMC_ZIPS[family]
+        return f"https://smc.org.in/downloads/fonts/{n}/{n}.zip"
+    if "smc.org.in/downloads/" in source:
+        return source
+    m = re.match(r"https://gitlab\.com/rit-fonts/([^/]+)/", source)
+    if m:
+        return f"https://gitlab.com/rit-fonts/{m.group(1)}/-/releases/permalink/latest"
+    if "github.com/notofonts/malayalam" in source:
+        return "https://notofonts.github.io/malayalam/"
+    if "github.com/google/fonts" in source:
+        return "https://fonts.google.com/specimen/" + family.replace(" ", "+")
+    return source
+
+
 def read_sources():
     sources = {}
     path = FONTS / "unicode" / "SOURCES.md"
@@ -78,7 +99,7 @@ def read_sources():
         folder = cells[1].strip("`/")
         spdx = re.search(r"`([^`]+)`", cells[3])
         who = cells[4].split(" / ")
-        url = re.search(r"https?://[^\s)]+", cells[5]) if len(cells) > 5 else None
+        url = re.search(r"https?://[^\s);,]+", cells[5]) if len(cells) > 5 else None
         sources[folder] = {
             "family": cells[0],
             "license": spdx.group(1) if spdx else cells[3],
@@ -86,6 +107,7 @@ def read_sources():
             "foundry": who[1].strip() if len(who) > 1 else "",
             "source": url.group(0) if url else "",
         }
+        sources[folder]["download"] = latest_download(cells[0], sources[folder]["source"])
     return sources
 
 
@@ -202,6 +224,8 @@ def main():
                     entry["foundry"] = source["foundry"]
                 if source["source"]:
                     entry["source"] = source["source"]
+                if source["download"]:
+                    entry["download"] = source["download"]
             elif collection != "Unicode":
                 entry.update(legacy_rights(font))
             designer = source["designer"] if source else name(font, 9, 8)

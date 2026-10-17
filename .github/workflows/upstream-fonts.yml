@@ -1,0 +1,49 @@
+name: Upstream fonts
+
+# Monthly check that the open fonts we preview match their latest upstream release.
+on:
+  schedule:
+    - cron: "0 3 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-fonts
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Compare with upstream
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_upstream.py --report "$RUNNER_TEMP/report.md"
+
+      - name: Open or update the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          stale=$(cat "$RUNNER_TEMP/report.md.stale")
+          title="Upstream font updates"
+          existing=$(gh issue list --repo "$REPO" --state open --label upstream-update --json number --jq '.[0].number // empty')
+          if [ "$stale" -gt 0 ]; then
+            gh label create upstream-update --repo "$REPO" --color 0E8A16 --description "An open font has a newer upstream release" 2>/dev/null || true
+            if [ -n "$existing" ]; then
+              gh issue edit "$existing" --repo "$REPO" --body-file "$RUNNER_TEMP/report.md"
+              gh issue comment "$existing" --repo "$REPO" --body "Checked again on $(date -u +%F): still $stale out of date."
+            else
+              gh issue create --repo "$REPO" --title "$title" --label upstream-update --body-file "$RUNNER_TEMP/report.md"
+            fi
+          elif [ -n "$existing" ]; then
+            gh issue close "$existing" --repo "$REPO" --comment "Every font matches upstream as of $(date -u +%F)."
+          fi

@@ -1,6 +1,6 @@
-import * as motion from '/js/motion.js?v=14';
-import { initThemeToggle, initStars, initFacts } from '/js/common.js?v=14';
-import { FACTS } from '/js/facts.js?v=14';
+import * as motion from '/js/motion.js?v=15';
+import { initThemeToggle, initStars, initFacts } from '/js/common.js?v=15';
+import { FACTS } from '/js/facts.js?v=15';
 
 const WITH_DIGITS = [
   'unicode-anekmalayalam-wdth-wght', 'unicode-anjalioldlipi-regular', 'unicode-baloochettan2-wght', 'unicode-chilanka-regular',
@@ -12,7 +12,7 @@ const WITH_DIGITS = [
   'unicode-rit-rachana-bold', 'unicode-rit-sundar', 'unicode-rit-tnjoy-bold', 'unicode-rit-thaara', 'unicode-rit-uroob',
   'unicode-rachana-bold', 'unicode-suruma', 'unicode-uroob-regular', 'mlu-mlu-chandrika-bold-old-lipi', 'mlu-mlu-keralam-bold',
 ];
-const FONT_VERSION = 2;
+const FONT_VERSION = 3;
 const gsap = window.gsap;
 const loaded = new Map();
 
