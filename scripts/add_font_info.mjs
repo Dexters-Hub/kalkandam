@@ -22,7 +22,7 @@ const unquote = (s) => s.split('\n').map((l) => l.replace(/^> ?/, '')).join('\n'
 
 // Two formats: the site form (bold labels, quoted text) and the GitHub issue form (### headings).
 function parse() {
-  if (body.includes('### Font')) {
+  if (/^### Font\s*$/m.test(body) && !body.includes('Sent from the form on kalkandam.in')) {
     const section = (name) => {
       const m = body.match(new RegExp(`### ${name}[^\\n]*\\n+([\\s\\S]*?)(?=\\n### |$)`));
       const v = m ? m[1].trim() : '';
@@ -31,9 +31,20 @@ function parse() {
     const kinds = { 'Who designed it': 'designer', 'When it was made': 'year', 'Foundry or publisher': 'foundry', 'Its licence or terms of use': 'licence', 'A story or history': 'story', 'A correction': 'correction' };
     return { font: section('Font'), kind: kinds[section('What do you know\\?')] || 'other', details: section('Details'), source: section('Source link'), name: section('Name to credit you as') };
   }
-  const line = (label) => (body.match(new RegExp(`\\*\\*${label}:\\*\\* ?(.*)`)) || [])[1]?.trim() || '';
-  const details = (body.match(/\*\*Details\*\*\n([\s\S]*?)(?=\n\n\*\*|\n---|$)/) || [])[1] || '';
-  return { font: line('Font'), kind: line('About') || 'other', details: unquote(details), source: line('Source').replace(/^<|>$/g, ''), name: line('Credit as') };
+  // Labels are matched at the start of a line, outside the details block, so text inside it can't fake them.
+  const fenced = body.match(/^\*\*Details\*\*\n```text\n([\s\S]*?)\n```$/m);
+  const outside = fenced ? body.replace(fenced[0], '') : body;
+  const line = (label) => (outside.match(new RegExp(`^\\*\\*${label}:\\*\\* ?(.*)$`, 'm')) || [])[1]?.trim() || '';
+  const bare = (v) => v.replace(/^`|`$/g, '');
+  // Older issues quoted the details with "> " instead of a code block.
+  const quoted = (outside.match(/^\*\*Details\*\*\n((?:>.*\n?)+)/m) || [])[1] || '';
+  return {
+    font: bare(line('Font')),
+    kind: line('About') || 'other',
+    details: fenced ? fenced[1].trim() : unquote(quoted),
+    source: line('Source').replace(/^<|>$/g, ''),
+    name: bare(line('Credit as')),
+  };
 }
 
 const note = parse();

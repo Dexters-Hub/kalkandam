@@ -1,6 +1,6 @@
-import * as motion from './motion.js?v=15';
-import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=15';
-import { FACTS } from './facts.js?v=15';
+import * as motion from './motion.js?v=16';
+import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=16';
+import { FACTS } from './facts.js?v=16';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const KINDS = { designer: 'Designer', year: 'Year', foundry: 'Foundry / publisher', licence: 'Licence', story: 'Story', correction: 'Correction', other: 'Other' };
@@ -123,7 +123,8 @@ async function initTurnstile(sitekey) {
     s.onerror = reject;
     document.head.append(s);
   });
-  turnstileWidget = window.turnstile.render('#cf-turnstile', { sitekey, theme: 'auto', size: 'flexible' });
+  const siteTheme = document.documentElement.dataset.theme;
+  turnstileWidget = window.turnstile.render('#cf-turnstile', { sitekey, theme: siteTheme === 'dark' || siteTheme === 'light' ? siteTheme : 'auto', size: 'flexible' });
 }
 
 function initFontPicker(fonts) {
@@ -213,7 +214,8 @@ async function initForm(fonts) {
     const res = await fetch('/api/config', { cache: 'no-store' });
     if (res.ok) config = await res.json();
   } catch {}
-  if (config.turnstile) initTurnstile(config.turnstile).catch(() => {});
+  let turnstileFailed = false;
+  if (config.turnstile) initTurnstile(config.turnstile).catch(() => { turnstileFailed = true; });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -230,7 +232,9 @@ async function initForm(fonts) {
     }
     const token = turnstileWidget !== null ? window.turnstile.getResponse(turnstileWidget) : '';
     if (config.turnstile && !token) {
-      status.textContent = 'Please complete the quick check above.';
+      status.textContent = turnstileFailed
+        ? 'The spam check could not load (an ad or tracker blocker may be stopping it). Allow challenges.cloudflare.com, or share it on GitHub: github.com/Dexters-Hub/kalkandam/issues'
+        : 'Please complete the quick check above.';
       return;
     }
     button.disabled = true;
@@ -246,7 +250,7 @@ async function initForm(fonts) {
       form.reset();
       status.textContent = out.local
         ? 'Thank you! (Local preview: nothing was sent.)'
-        : 'Thank you! Your note was sent for review.';
+        : 'Thank you! Your note is on GitHub now, waiting to be checked.';
       motion.pulse(status);
     } catch (err) {
       status.textContent = String(err.message) === 'not-configured'

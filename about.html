@@ -19,10 +19,10 @@
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <script src="./js/theme.js?v=15"></script>
-  <link rel="stylesheet" href="./css/app.css?v=15">
+  <script src="./js/theme.js?v=16"></script>
+  <link rel="stylesheet" href="./css/app.css?v=16">
   <script defer src="./vendor/gsap/gsap.min.js"></script>
-  <script type="module" src="./js/about.js?v=15"></script>
+  <script type="module" src="./js/about.js?v=16"></script>
 </head>
 <body class="about-page">
   <a class="skip" href="#story">Skip to content</a>
@@ -89,7 +89,7 @@
 
     <section class="about-section contribute" id="contribute" aria-labelledby="contribute-h">
       <h2 id="contribute-h">Know something about a font?</h2>
-      <p class="lt-intro">Who designed it, when, for which publication, or a story behind it. Send it in and it will be reviewed before it appears on the site. No account needed.</p>
+      <p class="lt-intro">Who designed it, when, for which publication, or a story behind it. No account needed. Your note is posted publicly as an <a href="https://github.com/Dexters-Hub/kalkandam/issues?q=label%3Afont-info" target="_blank" rel="noopener">issue on GitHub</a>, and is added to the site once it has been checked.</p>
       <form class="contrib-form" id="contrib-form" novalidate>
         <div class="field combo">
           <label for="cf-font">Font</label>
@@ -114,7 +114,7 @@
         <label class="field"><span>Source link <small>(optional)</small></span>
           <input id="cf-source" name="source" type="url" maxlength="300" placeholder="https://">
         </label>
-        <label class="field"><span>Your name, for credit <small>(optional)</small></span>
+        <label class="field"><span>Your name, for credit <small>(optional, shown publicly)</small></span>
           <input id="cf-name" name="name" maxlength="80" autocomplete="name">
         </label>
         <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">

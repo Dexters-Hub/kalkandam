@@ -8,6 +8,7 @@
   --muted: #6e6b66;
   --accent: #ff4f1f;
   --accent-ink: #ffffff;
+  --accent-text: #c53a10;
   --ok: #1d7a46;
   --ok-bg: #e5f4ea;
   --warn: #8a5a00;
@@ -33,6 +34,7 @@
     --ok-bg: #12291b;
     --warn: #f0c063;
     --warn-bg: #2b2210;
+    --accent-text: #ff4f1f;
     --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 32px -16px rgb(0 0 0 / .6);
     color-scheme: dark;
   }
@@ -50,6 +52,7 @@
   --ok-bg: #12291b;
   --warn: #f0c063;
   --warn-bg: #2b2210;
+  --accent-text: #ff4f1f;
   --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 32px -16px rgb(0 0 0 / .6);
   color-scheme: dark;
 }
@@ -349,12 +352,13 @@ code { background: var(--sunk); padding: 1px 6px; border-radius: 6px; font-size:
 .result-head select { width: auto; max-width: 60%; }
 
 .drop {
-  display: grid; place-items: center; text-align: center; padding: 40px 16px;
+  position: relative; display: grid; place-items: center; text-align: center; padding: 40px 16px;
   border: 1.5px dashed var(--line-strong); border-radius: var(--radius); cursor: pointer; color: var(--muted);
   transition: border-color .2s, background .2s, color .2s;
 }
 .drop.over, .drop:hover { border-color: var(--text); color: var(--text); background: var(--sunk); }
-.drop input { display: none; }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip-path: inset(50%); }
+.drop:focus-within { border-color: var(--text); color: var(--text); outline: 2px solid var(--accent); outline-offset: 2px; }
 .contrib { margin-top: 28px; color: var(--muted); }
 .contrib summary { cursor: pointer; color: var(--text); }
 
@@ -487,7 +491,7 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 
 
 .fact { display: flex; align-items: baseline; gap: 4px 8px; margin: 18px 0 0; padding: 12px 14px; min-height: 3.2em; border-radius: 12px; background: var(--sunk); color: var(--text); font-size: .88rem; line-height: 1.5; }
-.fact-label { flex: none; font-weight: 650; color: var(--accent); }
+.fact-label { flex: none; font-weight: 650; color: var(--accent-text); }
 .fact-text { display: inline; }
 @media (max-width: 559px) { .fact { flex-direction: column; min-height: 8.2em; } }
 .fact { position: relative; padding-right: 46px; }

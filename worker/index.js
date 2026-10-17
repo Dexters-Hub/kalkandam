@@ -52,9 +52,19 @@ const json = (body, init = {}) => new Response(JSON.stringify(body), {
   headers: { 'Content-Type': 'application/json', 'X-Content-Type-Options': 'nosniff', ...(init.headers || {}) },
 });
 
-const clean = (value, max) => String(value ?? '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim().slice(0, max);
-// Quote user text so it can't mention people, close issues or render as markup outside the quote.
-const quote = (text) => text.replace(/@/g, '@\u200b').replace(/`/g, "'").split('\n').map((l) => `> ${l}`).join('\n');
+// Normalise line breaks (a lone CR is a line break in Markdown too) and drop other control characters.
+const clean = (value, max) => String(value ?? '')
+  .replace(/\r\n?|[\u2028\u2029]/g, '\n')
+  .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+  .trim()
+  .slice(0, max);
+// User text goes inside code spans and blocks, where GitHub doesn't render links, images, HTML,
+// @mentions or #123 references. Without backticks it can't close the code early.
+const code = (text) => `\`${text.replace(/`/g, "'")}\``;
+const codeBlock = (text) => `\`\`\`text\n${text.replace(/`/g, "'")}\n\`\`\``;
+// Issue titles are plain text, but still link #123 and @name, so break those up.
+const plainTitle = (text) => text.replace(/[@#]/g, (c) => `${c}\u200b`);
+const TURNSTILE_HOSTS = new Set(['kalkandam.in', 'www.kalkandam.in', 'kalkandam.alwinjohn231.workers.dev']);
 
 async function hashClient(ip) {
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`kalkandam:${ip}`));
@@ -68,7 +78,7 @@ async function verifyTurnstile(token, ip, secret) {
   if (ip) body.append('remoteip', ip);
   const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
   const out = await res.json().catch(() => ({}));
-  return out.success === true && (!out.hostname || /(^|\.)kalkandam\.in$|\.workers\.dev$/.test(out.hostname));
+  return out.success === true && TURNSTILE_HOSTS.has(out.hostname);
 }
 
 async function contribute(request, env, stats) {
@@ -109,13 +119,13 @@ async function contribute(request, env, stats) {
   }
 
   const body = [
-    `**Font:** ${quote(font).slice(2)}`,
+    `**Font:** ${code(font)}`,
     `**About:** ${kind}`,
     '',
     '**Details**',
-    quote(details),
+    codeBlock(details),
     source ? `\n**Source:** <${source}>` : '',
-    name ? `\n**Credit as:** ${quote(name).slice(2)}` : '',
+    name ? `\n**Credit as:** ${code(name)}` : '',
     '\n---\nSent from the form on kalkandam.in/about. Check before adding it to the site.',
   ].join('\n');
 
@@ -128,7 +138,7 @@ async function contribute(request, env, stats) {
       'User-Agent': 'kalkandam-worker',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ title: `Font info: ${font.replace(/@/g, '@\u200b')} (${kind})`, body, labels: ['font-info'] }),
+    body: JSON.stringify({ title: `Font info: ${plainTitle(font)} (${kind})`, body, labels: ['font-info'] }),
   });
   if (!res.ok) {
     console.error('github issue failed', res.status);
@@ -140,6 +150,10 @@ async function contribute(request, env, stats) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.hostname === 'www.kalkandam.in') {
+      url.hostname = 'kalkandam.in';
+      return Response.redirect(url.toString(), 301);
+    }
     const stats = env.STATS.get(env.STATS.idFromName('global'));
 
     if (url.pathname === '/api/hit') {
