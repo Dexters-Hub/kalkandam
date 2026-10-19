@@ -83,7 +83,7 @@ The footer counters (visits, downloads, images, conversions) come from a tiny Cl
 | --- | --- |
 | `npm start` | Serve the site on port 8000 |
 | `npm test` | Run the converter tests |
-| `npm run build:fonts` | Rebuild `data/fonts.json` and `fonts/web/*.woff` (needs `pip install fonttools`) |
+| `npm run build:fonts` | Rebuild `data/fonts.json` and `fonts/web/*.woff2` (needs `pip install fonttools brotli`) |
 | `python3 scripts/check_upstream.py` | Check the open Unicode fonts against their latest upstream releases (also runs monthly as a GitHub Action) |
 | `npm run vendor:gsap` | Copy GSAP from `node_modules` into `vendor/gsap/` after an upgrade |
 

@@ -24,3 +24,4 @@ worker
 .DS_Store
 __pycache__
 .editorconfig
+.venv

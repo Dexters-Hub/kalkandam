@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=16';
-import * as motion from './motion.js?v=16';
-import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=16';
-import { FACTS } from './facts.js?v=16';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=17';
+import * as motion from './motion.js?v=17';
+import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=17';
+import { FACTS } from './facts.js?v=17';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -360,7 +360,7 @@ function renderControls() {
   let suggesterLoad = null;
   const loadSuggester = () => {
     suggesterLoad ||= Promise.all([
-      import('./suggest.js?v=16'),
+      import('./suggest.js?v=17'),
       fetch('./data/words/ml-words.txt').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }),
     ]).then(([mod, text]) => { suggester = mod.createSuggester(text, store.get('picks', {})); })
       .catch((err) => { suggesterLoad = null; console.error(err); });
@@ -601,7 +601,7 @@ async function downloadFamily(g, button) {
   const fonts = g.styles.filter((f) => f.file);
   const folder = `${g.family} (${g.collection})`.replace(/[\\/:*?"<>|]+/g, '-');
   try {
-    const { makeZip } = await import('./zip.js?v=16');
+    const { makeZip } = await import('./zip.js?v=17');
     const files = [];
     let done = 0;
     button.textContent = `Preparing 0/${fonts.length}…`;
