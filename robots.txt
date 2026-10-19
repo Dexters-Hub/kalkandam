@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /fonts/
 
 Sitemap: https://kalkandam.in/sitemap.xml

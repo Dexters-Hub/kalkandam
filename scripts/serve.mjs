@@ -4,6 +4,8 @@ import { extname, join, normalize, resolve } from 'node:path';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
 const PORT = Number(process.env.PORT) || 8000;
+// Only this machine by default. For testing on a phone over Wi-Fi: HOST=0.0.0.0 npm start
+const HOST = process.env.HOST || '127.0.0.1';
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png',
@@ -13,7 +15,11 @@ const TYPES = {
 const counts = { visit: 0, download: 0, image: 0, share: 0, convert: 0 };
 
 async function resolveFile(urlPath) {
-  const safe = normalize(decodeURIComponent(urlPath)).replace(/^(\.\.[/\\])+/, '');
+  let decoded;
+  try { decoded = decodeURIComponent(urlPath); } catch { return null; }
+  // Never serve dotfiles or folders (.git, .dev.vars, .env, .wrangler).
+  if (decoded.split(/[/\\]/).some((part) => part.startsWith('.'))) return null;
+  const safe = normalize(decoded).replace(/^(\.\.[/\\])+/, '');
   const base = join(ROOT, safe);
   if (!base.startsWith(ROOT)) return null;
   for (const candidate of [base, `${base}.html`, join(base, 'index.html')]) {
@@ -25,6 +31,16 @@ async function resolveFile(urlPath) {
 }
 
 createServer(async (req, res) => {
+  try {
+    await handle(req, res);
+  } catch (err) {
+    console.error(err);
+    if (!res.headersSent) res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('Bad request');
+  }
+}).listen(PORT, HOST, () => console.log(`Kalkandam running at http://localhost:${PORT}${HOST === '0.0.0.0' ? ' (and on your network)' : ''}`));
+
+async function handle(req, res) {
   const url = new URL(req.url, 'http://localhost');
   if (url.pathname === '/api/hit' && req.method === 'POST') {
     let body = '';
@@ -60,4 +76,4 @@ createServer(async (req, res) => {
   }
   res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
   res.end(await readFile(file));
-}).listen(PORT, () => console.log(`Kalkandam running at http://localhost:${PORT}`));
+}

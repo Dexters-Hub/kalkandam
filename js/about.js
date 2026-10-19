@@ -1,6 +1,6 @@
-import * as motion from './motion.js?v=17';
-import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=17';
-import { FACTS } from './facts.js?v=17';
+import * as motion from './motion.js?v=18';
+import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=18';
+import { FACTS } from './facts.js?v=18';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const KINDS = { designer: 'Designer', year: 'Year', foundry: 'Foundry / publisher', licence: 'Licence', story: 'Story', correction: 'Correction', other: 'Other' };

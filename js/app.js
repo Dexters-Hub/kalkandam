@@ -1,7 +1,7 @@
-import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=17';
-import * as motion from './motion.js?v=17';
-import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=17';
-import { FACTS } from './facts.js?v=17';
+import { toLegacy, fromLegacy, toManglish, fromManglish } from './malayalam.js?v=18';
+import * as motion from './motion.js?v=18';
+import { store, REPO, designerNames, personSlug, loadFontInfo, initThemeToggle, initStars, track, trackVisit, initSiteStats, initFacts } from './common.js?v=18';
+import { FACTS } from './facts.js?v=18';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -207,6 +207,7 @@ function activateCard(card) {
     .catch(() => { card.classList.add('ready'); card.querySelector('.sub').textContent += ' · failed to load'; });
 }
 
+let cardCount = 0;
 function buildCard(group, { own = false } = {}) {
   const card = document.createElement('article');
   card.className = 'card';
@@ -232,6 +233,10 @@ function buildCard(group, { own = false } = {}) {
       ${own ? '<button data-act="remove">Remove</button>' : '<a data-act="font" download>Font ↓</a>'}
     </div>`;
   $('h3', card).textContent = group.family;
+  // Screen readers announce "Open, Anek Malayalam" instead of 232 identical "Open" buttons.
+  const headingId = `card-${++cardCount}`;
+  $('h3', card).id = headingId;
+  for (const el of $$('.card-actions [data-act]', card)) el.setAttribute('aria-describedby', headingId);
   const designer = (group.styles[0].designer || '').replace(/[\s,;.]+$/, '');
   $('.sub', card).textContent = `${styleCount} style${styleCount > 1 ? 's' : ''}${designer ? ` · ${designer}` : ''}`;
   $('.badge', card).textContent = group.collection;
@@ -360,7 +365,7 @@ function renderControls() {
   let suggesterLoad = null;
   const loadSuggester = () => {
     suggesterLoad ||= Promise.all([
-      import('./suggest.js?v=17'),
+      import('./suggest.js?v=18'),
       fetch('./data/words/ml-words.txt').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }),
     ]).then(([mod, text]) => { suggester = mod.createSuggester(text, store.get('picks', {})); })
       .catch((err) => { suggesterLoad = null; console.error(err); });
@@ -601,7 +606,7 @@ async function downloadFamily(g, button) {
   const fonts = g.styles.filter((f) => f.file);
   const folder = `${g.family} (${g.collection})`.replace(/[\\/:*?"<>|]+/g, '-');
   try {
-    const { makeZip } = await import('./zip.js?v=17');
+    const { makeZip } = await import('./zip.js?v=18');
     const files = [];
     let done = 0;
     button.textContent = `Preparing 0/${fonts.length}…`;
@@ -882,6 +887,10 @@ function sheetExportOpts(transparent) {
 }
 
 function initSheet() {
+  const stage = $('#stage');
+  const updateFade = () => stage.classList.toggle('more', stage.scrollHeight - stage.scrollTop - stage.clientHeight > 4);
+  stage.addEventListener('scroll', updateFade, { passive: true });
+  new ResizeObserver(updateFade).observe($('#stage-text'));
   $('#sheet-close').addEventListener('click', () => motion.closeSheet(sheet));
   sheet.addEventListener('click', (e) => { if (e.target === sheet) motion.closeSheet(sheet); });
   sheet.addEventListener('cancel', (e) => { e.preventDefault(); motion.closeSheet(sheet); });
@@ -1068,6 +1077,7 @@ const HERO_MAX_FETCHES = 8;
 let heroFetches = 0;
 
 function initHero(fonts) {
+  $('#search').placeholder = `Search ${fonts.length} fonts…`;
   const stats = $('#stats');
   const collections = new Set(fonts.map((f) => f.collection)).size;
   const values = [fonts.length, FAMILIES.length, collections];
