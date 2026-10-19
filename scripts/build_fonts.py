@@ -150,7 +150,7 @@ def make_web_copy(src, dest, encoding):
         sub.platformID, sub.platEncID, sub.language = 3, 1, 0
         sub.cmap = {cp: g for cp, g in legacy_mapping(font).items() if cp <= 0xFFFF}
         font["cmap"].tables = [sub]
-    font.flavor = "woff"
+    font.flavor = "woff2"  # needs the brotli module
     font.save(dest)
 
 
@@ -201,7 +201,7 @@ def main():
                 font_id = slug(f"{collection}-{path.relative_to(base)}")
             seen.add(font_id)
 
-            web = WEB / f"{font_id}.woff"
+            web = WEB / f"{font_id}.woff2"
             if not web.exists() or web.stat().st_mtime < path.stat().st_mtime:
                 make_web_copy(path, web, encoding)
 
@@ -234,8 +234,8 @@ def main():
             catalogue.append(entry)
 
     live = {e["id"] for e in catalogue}
-    for stale in WEB.glob("*.woff"):
-        if stale.stem not in live:
+    for stale in [*WEB.glob("*.woff"), *WEB.glob("*.woff2")]:
+        if stale.suffix == ".woff" or stale.stem not in live:
             stale.unlink()
 
     OUT.parent.mkdir(parents=True, exist_ok=True)

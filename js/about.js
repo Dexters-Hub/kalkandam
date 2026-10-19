@@ -1,6 +1,6 @@
-import * as motion from './motion.js?v=16';
-import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=16';
-import { FACTS } from './facts.js?v=16';
+import * as motion from './motion.js?v=17';
+import { initThemeToggle, initStars, initFacts, initSiteStats, trackVisit, designerNames, personSlug, loadFontInfo } from './common.js?v=17';
+import { FACTS } from './facts.js?v=17';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const KINDS = { designer: 'Designer', year: 'Year', foundry: 'Foundry / publisher', licence: 'Licence', story: 'Story', correction: 'Correction', other: 'Other' };
@@ -215,7 +215,21 @@ async function initForm(fonts) {
     if (res.ok) config = await res.json();
   } catch {}
   let turnstileFailed = false;
-  if (config.turnstile) initTurnstile(config.turnstile).catch(() => { turnstileFailed = true; });
+  // Load the spam check only when someone gets near the form; most visitors never scroll that far.
+  if (config.turnstile) {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      lazy?.disconnect();
+      initTurnstile(config.turnstile).catch(() => { turnstileFailed = true; });
+    };
+    const lazy = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) start(); }, { rootMargin: '400px 0px' })
+      : null;
+    if (lazy) lazy.observe(form); else start();
+    form.addEventListener('focusin', start, { once: true });
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
