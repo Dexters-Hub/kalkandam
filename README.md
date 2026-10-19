@@ -4,7 +4,7 @@
 
 # Kalkandam · കൽക്കണ്ടം
 
-**700 Malayalam fonts. Preview, convert, download.**
+**700+ Malayalam fonts. Preview, convert, download.**
 
 Type once and see it in every font. Built for phones.
 

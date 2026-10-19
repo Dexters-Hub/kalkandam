@@ -383,6 +383,8 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 .meta { margin: 0; color: var(--muted); font-size: .82rem; }
 .icon { border: 1px solid var(--line); background: var(--surface); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; flex: none; }
 .stage { margin: 14px 0 10px; border-radius: 16px; overflow: auto; max-height: 46dvh; transition: background-color .3s; }
+/* Hint that long text continues below. */
+.stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 48px), transparent); mask-image: linear-gradient(#000 calc(100% - 48px), transparent); }
 #stage-text { margin: 0; padding: 30px 22px; min-height: 170px; overflow-wrap: anywhere; line-height: 1.5; white-space: pre-wrap; }
 .sheet-text {
   width: 100%; resize: vertical; background: var(--sunk); border: 1px solid transparent; border-radius: 12px;
@@ -447,7 +449,7 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
 
 @media (pointer: coarse) {
   #search, #sample, .sheet-text, .field textarea, .result textarea, select { font-size: max(16px, 1em); }
-  .card-styles button { padding: 5px 10px; font-size: .78rem; }
+  .card-styles button { padding: 7px 11px; font-size: .78rem; }
   .chips.small button { padding: 6px 13px; }
   .card-actions > * { padding: 14px 4px; }
 }
@@ -469,7 +471,7 @@ dialog#sheet::backdrop { background: rgb(10 10 10 / .38); }
   color: var(--muted); text-decoration: none; transition: color .2s, border-color .2s;
 }
 #letters-jump a:hover { color: var(--text); border-color: var(--line-strong); }
-.lt-section { margin-top: 34px; scroll-margin-top: 80px; }
+.lt-section { margin-top: 34px; scroll-margin-top: 100px; }
 .lt-section h2, .lt-section h3 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 6px; letter-spacing: -.02em; }
 .lt-section h2 { font-size: 1.45rem; }
 .lt-section h3 { font-size: 1.05rem; margin-top: 22px; }
@@ -636,3 +638,20 @@ html[data-view="convert"] #view-convert, html[data-view="try"] #view-try { displ
 .combo-list li[aria-selected="true"], .combo-list li:hover { background: var(--sunk); }
 .combo-list .combo-empty { color: var(--muted); cursor: default; font-size: .86rem; }
 .combo-list .combo-empty:hover { background: none; }
+
+/* Bigger tap areas on touch screens without changing how the controls look. */
+@media (pointer: coarse) {
+  .swatches button, .theme-toggle, .icon, .card-styles button, .presets button, .suggest button { position: relative; }
+  .swatches button::after, .theme-toggle::after, .icon::after,
+  .card-styles button::after, .presets button::after, .suggest button::after, .chips button::after {
+    content: ""; position: absolute;
+  }
+  .swatches button::after { inset: -12px -4px; }
+  .theme-toggle::after { inset: -7px; border-radius: 50%; }
+  .icon::after { inset: -6px; border-radius: 50%; }
+  .card-styles button::after { inset: -3px -2px; }
+  .presets button::after, .suggest button::after { inset: -7px -3px; }
+  .chips button::after { inset: -4px 0; }
+  .ctl.color input[type="color"] { min-width: 44px; min-height: 36px; }
+}
+::placeholder { color: var(--muted); opacity: 1; }
